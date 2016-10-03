@@ -2,22 +2,33 @@
 
 use Cobwebinfo\ShrekApiClient\ApiConnector;
 use Cobwebinfo\ShrekApiClient\Cache\Contracts\Store;
+use Cobwebinfo\ShrekApiClient\Cache\KeyGenerator;
 use Psr\Http\Message\ResponseInterface;
 
 abstract class BaseClient
 {
     /**
+     * Class which connects to API.
+     *
      * @var ApiConnector
      */
     protected $connector;
 
     /**
+     * Class which handles caching.
+     *
      * @var Store
      */
     protected $store;
 
     /**
+     * @var KeyGenerator
+     */
+    protected $keyGenerator;
+
+    /**
      * BaseClient constructor.
+     *
      * @param ApiConnector $connector
      * @param Store $store
      */
@@ -25,6 +36,7 @@ abstract class BaseClient
     {
         $this->connector = $connector;
         $this->store = $store;
+        $this->keyGenerator = new KeyGenerator();
     }
 
     /**
@@ -33,26 +45,55 @@ abstract class BaseClient
      * @param $resource
      * @param array $headers
      * @param array $query
-     * 
-     * @return mixed
+     *
+     * @return ResponseInterface
      */
     public function get($resource, array $headers = [], array $query = [])
     {
         $accessToken = $this->fetchAccessToken();
 
-        $headers['Authorization'] = 'Bearer ' . $accessToken;
+        $cached = $this->fromCache($resource, $query, $accessToken);
 
-        $response = $this->connector->httpClient()->get($resource, [
-            'headers' => $headers,
-            'query' => $query
-        ]);
+        if ($cached) {
+            $response = $cached;
+        } else {
+            $headers['Authorization'] = 'Bearer ' . $accessToken;
+
+            $response = $this->connector->httpClient()->get($resource, [
+                'headers' => $headers,
+                'query' => $query
+            ]);
+        }
 
         return $response;
     }
 
     /**
-     * @param $response
+     * Fetches response from cache if available.
+     *
+     * @param $resource
+     * @param array $query
      * @return mixed
+     */
+    protected function fromCache($resource, array $query, $accessToken)
+    {
+        $key = $this->keyGenerator->generate(
+            $resource,
+            $query,
+            $accessToken
+        );
+
+        $cached = $this->store->get($key);
+
+        return $cached;
+    }
+
+    /**
+     * Parses a ResponseInterface object.
+     *
+     * @param $response
+     *
+     * @return null|array
      */
     public function parseSuccess(ResponseInterface $response)
     {
@@ -60,7 +101,7 @@ abstract class BaseClient
 
         $json = \json_decode($response->getBody(), true);
 
-        if($json && isset($json['data'])) {
+        if ($json && isset($json['data'])) {
             $payload = $json['data'];
         }
 
@@ -68,13 +109,16 @@ abstract class BaseClient
     }
 
     /**
+     * Fetches access token from cache if one is
+     * available, or from API if not.
+     *
      * @return bool|\League\OAuth2\Client\Token\AccessToken
      */
     public function fetchAccessToken()
     {
         $token = $this->fetchAccessTokenFromCache();
 
-        if(!$token) {
+        if (!$token) {
             $token = $this->connector->fetchAccessToken();
 
             $this->store->put('access_token', $token, 60);
@@ -84,13 +128,15 @@ abstract class BaseClient
     }
 
     /**
+     * Fetches access token from cache.
+     *
      * @return bool|\League\OAuth2\Client\Token\AccessToken
      */
     protected function fetchAccessTokenFromCache()
     {
         $accessToken = $this->store->get('access_token');
 
-        if(!$accessToken || $accessToken->hasExpired()) {
+        if (!$accessToken || $accessToken->hasExpired()) {
             return false;
         }
 

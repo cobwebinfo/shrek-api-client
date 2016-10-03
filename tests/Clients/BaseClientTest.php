@@ -11,7 +11,6 @@ class StubClient extends BaseClient {}
 
 class BaseClientTest extends \PHPUnit_Framework_TestCase
 {
-
     public function test_client_adds_auth_header()
     {
         $mocks = $this->getMocks();
@@ -22,6 +21,9 @@ class BaseClientTest extends \PHPUnit_Framework_TestCase
         $mocks['http']->shouldReceive('get')
             ->once()
             ->with("/test", $this->getExpectedParams());
+
+        $mocks['stub']->shouldReceive('fromCache')
+            ->andReturn(null);
 
         $mocks['stub']->get('/test');
     }
@@ -43,6 +45,9 @@ class BaseClientTest extends \PHPUnit_Framework_TestCase
             ->once()
             ->with("/test", $params);
 
+        $mocks['stub']->shouldReceive('fromCache')
+            ->andReturn(null);
+
         $mocks['stub']->get('/test');
     }
 
@@ -57,7 +62,28 @@ class BaseClientTest extends \PHPUnit_Framework_TestCase
             ->once()
             ->with("/keywords", $this->getExpectedParams());
 
+        $mocks['stub']->shouldReceive('fromCache')
+            ->andReturn(null);
+
         $mocks['stub']->get('/keywords');
+    }
+
+    public function test_client_returns_from_cache_if_available()
+    {
+        $mocks = $this->getMocks();
+
+        $mocks['stub']->shouldReceive('fetchAccessToken')
+            ->andReturn('123');
+
+        $response = new Response(200, [] ,json_encode(['test' => 123]));
+
+        $mocks['store']->shouldReceive('get')
+            ->once()
+            ->andReturn($response);
+
+        $result = $mocks['stub']->get('/keywords', [], ['name' => 'test']);
+
+        $this->assertEquals($response, $result);
     }
 
     public function test_client_passes_query()
@@ -73,6 +99,9 @@ class BaseClientTest extends \PHPUnit_Framework_TestCase
         $mocks['http']->shouldReceive('get')
             ->once()
             ->with("/keywords", $expectedParams);
+
+        $mocks['stub']->shouldReceive('fromCache')
+            ->andReturn(null);
 
         $mocks['stub']->get('/keywords', [], ['name' => 'test']);
     }
@@ -91,6 +120,9 @@ class BaseClientTest extends \PHPUnit_Framework_TestCase
             ->once()
             ->with("/keywords", $expectedParams);
 
+        $mocks['stub']->shouldReceive('fromCache')
+            ->andReturn(null);
+
         $mocks['stub']->get('/keywords', ['test' => '123'], []);
     }
 
@@ -104,6 +136,9 @@ class BaseClientTest extends \PHPUnit_Framework_TestCase
         $mocks['http']->shouldReceive('get')
             ->once()
             ->andReturn(true);
+
+        $mocks['stub']->shouldReceive('fromCache')
+            ->andReturn(null);
 
         $result = $mocks['stub']->get('/test');
 
@@ -133,11 +168,6 @@ class BaseClientTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(null, $mocks['stub']->parseSuccess($response));
     }
 
-    public function test_to_json_with_null()
-    {
-
-    }
-
     protected function getMocks()
     {
         $httpClient = $this->getMockClient();
@@ -147,6 +177,7 @@ class BaseClientTest extends \PHPUnit_Framework_TestCase
         $store = $this->getMockStore();
 
         $stub = \Mockery::mock(StubClient::class, [$connector, $store])
+            ->shouldAllowMockingProtectedMethods()
             ->makePartial();
 
         return [
