@@ -17,11 +17,19 @@ php composer.phar require "cobwebinfo/shrek-api-client:1.0.*"
 ```
 
 ## Usage
-
 To do
-
 ```php
 $instantiator = new ();
 
 $instance = $instantiator->instantiate();
 ```
+
+## Todo
+
+- More cache handlers (redis & APC)
+- Clear/bypass cache?
+- Unit tests
+- Integration tests.
+- Release version 1.0
+- Packagist
+

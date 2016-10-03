@@ -64,6 +64,8 @@ abstract class BaseClient
                 'query' => $query
             ]);
 
+            //todo - need to make this cacheable. Streams are not.
+
             $this->toCache($this->getCacheKey($resource, $query, $accessToken), $response);
         }
 
