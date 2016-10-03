@@ -66,7 +66,7 @@ class KeywordQueryTest extends \PHPUnit_Framework_TestCase
             'title' => 'I dont exist',
         );
 
-        $this->expectException(\Exception::class);
+        $this->setExpectedException(\Exception::class);
 
         $keywordQuery = new KeywordQuery($init);
     }
