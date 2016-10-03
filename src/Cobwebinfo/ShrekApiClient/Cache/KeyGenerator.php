@@ -20,7 +20,7 @@ class KeyGenerator
     {
         $query['client_access_token'] = $accessToken;
 
-        return $this->generatePrefix($resource). md5(serialize($query));
+        return $this->generatePrefix($resource). crc32(serialize($query));
     }
 
     /**
@@ -31,6 +31,6 @@ class KeyGenerator
      */
     protected function generatePrefix($resource)
     {
-        return $resource . "_";
+        return 'cobweb_' . $resource . "_";
     }
 }

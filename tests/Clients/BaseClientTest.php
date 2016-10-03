@@ -25,6 +25,8 @@ class BaseClientTest extends \PHPUnit_Framework_TestCase
         $mocks['stub']->shouldReceive('fromCache')
             ->andReturn(null);
 
+        $mocks['stub']->shouldReceive('toCache');
+
         $mocks['stub']->get('/test');
     }
 
@@ -48,6 +50,8 @@ class BaseClientTest extends \PHPUnit_Framework_TestCase
         $mocks['stub']->shouldReceive('fromCache')
             ->andReturn(null);
 
+        $mocks['stub']->shouldReceive('toCache');
+
         $mocks['stub']->get('/test');
     }
 
@@ -65,6 +69,8 @@ class BaseClientTest extends \PHPUnit_Framework_TestCase
         $mocks['stub']->shouldReceive('fromCache')
             ->andReturn(null);
 
+        $mocks['stub']->shouldReceive('toCache');
+
         $mocks['stub']->get('/keywords');
     }
 
@@ -80,6 +86,8 @@ class BaseClientTest extends \PHPUnit_Framework_TestCase
         $mocks['store']->shouldReceive('get')
             ->once()
             ->andReturn($response);
+
+        $mocks['stub']->shouldReceive('toCache');
 
         $result = $mocks['stub']->get('/keywords', [], ['name' => 'test']);
 
@@ -103,6 +111,8 @@ class BaseClientTest extends \PHPUnit_Framework_TestCase
         $mocks['stub']->shouldReceive('fromCache')
             ->andReturn(null);
 
+        $mocks['stub']->shouldReceive('toCache');
+
         $mocks['stub']->get('/keywords', [], ['name' => 'test']);
     }
 
@@ -123,6 +133,8 @@ class BaseClientTest extends \PHPUnit_Framework_TestCase
         $mocks['stub']->shouldReceive('fromCache')
             ->andReturn(null);
 
+        $mocks['stub']->shouldReceive('toCache');
+
         $mocks['stub']->get('/keywords', ['test' => '123'], []);
     }
 
@@ -139,6 +151,8 @@ class BaseClientTest extends \PHPUnit_Framework_TestCase
 
         $mocks['stub']->shouldReceive('fromCache')
             ->andReturn(null);
+
+        $mocks['stub']->shouldReceive('toCache');
 
         $result = $mocks['stub']->get('/test');
 

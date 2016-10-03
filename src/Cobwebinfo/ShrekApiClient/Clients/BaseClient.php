@@ -63,6 +63,8 @@ abstract class BaseClient
                 'headers' => $headers,
                 'query' => $query
             ]);
+
+            $this->toCache($this->getCacheKey($resource, $query, $accessToken), $response);
         }
 
         return $response;
@@ -77,15 +79,37 @@ abstract class BaseClient
      */
     protected function fromCache($resource, array $query, $accessToken)
     {
-        $key = $this->keyGenerator->generate(
-            $resource,
-            $query,
-            $accessToken
-        );
+        $key = $this->getCacheKey($resource, $query, $accessToken);
 
         $cached = $this->store->get($key);
 
         return $cached;
+    }
+
+    /**
+     * Adds response to cache,
+     *
+     * @param $key
+     * @param $response
+     */
+    protected function toCache($key, $response)
+    {
+        $this->store->put($key, $response, 30);
+    }
+
+    /**
+     * @param $resource
+     * @param array $query
+     * @param $accessToken
+     * @return string
+     */
+    protected function getCacheKey($resource, array $query, $accessToken)
+    {
+        return $this->keyGenerator->generate(
+            $resource,
+            $query,
+            $accessToken
+        );
     }
 
     /**
