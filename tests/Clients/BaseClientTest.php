@@ -19,17 +19,21 @@ class BaseClientTest extends \PHPUnit_Framework_TestCase
         $mocks['stub']->shouldReceive('fetchAccessToken')
             ->andReturn('123');
 
+        $response = new Response();
+
         $mocks['http']->shouldReceive('get')
             ->once()
             ->with("/test", $this->getExpectedParams())
-            ->andReturn(new Response());
+            ->andReturn($response);
 
         $mocks['stub']->shouldReceive('fromCache')
             ->andReturn(null);
 
         $mocks['stub']->shouldReceive('toCache');
 
-        $mocks['stub']->get('/test');
+        $result = $mocks['stub']->get('/test');
+
+        $this->assertEquals(new CacheableResponse($response), $result);
     }
 
     public function test_client_uses_cached_token_for_auth_header()
@@ -45,17 +49,21 @@ class BaseClientTest extends \PHPUnit_Framework_TestCase
         $params = $this->getExpectedParams();
         $params['headers']['Authorization'] = 'Bearer 456';
 
+        $response = new Response();
+
         $mocks['http']->shouldReceive('get')
             ->once()
             ->with("/test", $params)
-            ->andReturn(new Response());
+            ->andReturn($response);
 
         $mocks['stub']->shouldReceive('fromCache')
             ->andReturn(null);
 
         $mocks['stub']->shouldReceive('toCache');
 
-        $mocks['stub']->get('/test');
+        $result = $mocks['stub']->get('/test');
+
+        $this->assertEquals(new CacheableResponse($response), $result);
     }
 
     public function test_client_calls_correct_resource()
@@ -65,17 +73,21 @@ class BaseClientTest extends \PHPUnit_Framework_TestCase
         $mocks['stub']->shouldReceive('fetchAccessToken')
             ->andReturn('123');
 
+        $response = new Response();
+
         $mocks['http']->shouldReceive('get')
             ->once()
             ->with("/keywords", $this->getExpectedParams())
-            ->andReturn(new Response());
+            ->andReturn($response);
 
         $mocks['stub']->shouldReceive('fromCache')
             ->andReturn(null);
 
         $mocks['stub']->shouldReceive('toCache');
 
-        $mocks['stub']->get('/keywords');
+        $result = $mocks['stub']->get('/keywords');
+
+        $this->assertEquals(new CacheableResponse($response), $result);
     }
 
     public function test_client_returns_from_cache_if_available()
@@ -109,17 +121,21 @@ class BaseClientTest extends \PHPUnit_Framework_TestCase
         $expectedParams = $this->getExpectedParams();
         $expectedParams['query']['name'] = 'test';
 
+        $response = new Response();
+
         $mocks['http']->shouldReceive('get')
             ->once()
             ->with("/keywords", $expectedParams)
-            ->andReturn(new Response());
+            ->andReturn($response);
 
         $mocks['stub']->shouldReceive('fromCache')
             ->andReturn(null);
 
         $mocks['stub']->shouldReceive('toCache');
 
-        $mocks['stub']->get('/keywords', [], ['name' => 'test']);
+        $result = $mocks['stub']->get('/keywords', [], ['name' => 'test']);
+
+        $this->assertEquals(new CacheableResponse($response), $result);
     }
 
     public function test_client_passes_custom_headers()
@@ -132,17 +148,21 @@ class BaseClientTest extends \PHPUnit_Framework_TestCase
         $expectedParams = $this->getExpectedParams();
         $expectedParams['headers']['test'] = '123';
 
+        $response = new Response();
+
         $mocks['http']->shouldReceive('get')
             ->once()
             ->with("/keywords", $expectedParams)
-            ->andReturn(new Response());
+            ->andReturn($response);
 
         $mocks['stub']->shouldReceive('fromCache')
             ->andReturn(null);
 
         $mocks['stub']->shouldReceive('toCache');
 
-        $mocks['stub']->get('/keywords', ['test' => '123'], []);
+        $result =  $mocks['stub']->get('/keywords', ['test' => '123'], []);
+
+        $this->assertEquals(new CacheableResponse($response), $result);
     }
 
     public function test_client_returns_cacheable_response()

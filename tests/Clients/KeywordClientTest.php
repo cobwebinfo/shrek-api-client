@@ -15,22 +15,32 @@ class KeywordClientTest extends \PHPUnit_Framework_TestCase
     {
         $mock = $this->getClientMock();
 
+        $response = new CacheableResponse(new Response());
+
         $mock->shouldReceive('get')
             ->once()
-            ->with('keywords/' . 23, [], []);
+            ->with('keywords/' . 23, [], [])
+            ->andReturn($response);
 
-        $mock->one(23, [], []);
+        $result =  $mock->one(23, [], []);
+
+        $this->assertEquals($response, $result);
     }
 
     public function test_paginate_calls_get_with_correct_params()
     {
         $mock = $this->getClientMock();
 
+        $response = new CacheableResponse(new Response());
+
         $mock->shouldReceive('get')
             ->once()
-            ->with('keywords/', [], ['page' => 0, 'per_page' => 1]);
+            ->with('keywords/', [], ['page' => 0, 'per_page' => 1])
+            ->andReturn($response);
 
-        $mock->paginate(0, 1, []);
+        $result = $mock->paginate(0, 1, []);
+
+        $this->assertEquals($response, $result);
     }
 
     /**
