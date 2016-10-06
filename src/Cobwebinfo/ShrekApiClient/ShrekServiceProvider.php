@@ -1,6 +1,7 @@
 <?php namespace Cobwebinfo\ShrekApiClient;
 
 use Cobwebinfo\ShrekApiClient\Cache\Contracts\Store;
+use Cobwebinfo\ShrekApiClient\Factory\ApcStoreFactory;
 use Cobwebinfo\ShrekApiClient\Factory\GuzzleAdapterFactory;
 use Cobwebinfo\ShrekApiClient\Factory\MemcacheStoreFactory;
 use Cobwebinfo\ShrekApiClient\Factory\NullStoreFactory;
@@ -38,6 +39,7 @@ class ShrekServiceProvider
      * @var array
      */
     protected $nativeStores = [
+        'apc' => ApcStoreFactory::class,
         'memcache' => MemcacheStoreFactory::class,
         'none' => NullStoreFactory::class
     ];
