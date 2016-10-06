@@ -138,26 +138,6 @@ abstract class BaseClient
     }
 
     /**
-     * Parses a ResponseInterface object.
-     *
-     * @param $response
-     *
-     * @return null|array
-     */
-    public function parseSuccess(ResponseInterface $response)
-    {
-        $payload = null;
-
-        $json = \json_decode($response->getBody(), true);
-
-        if ($json && isset($json['data'])) {
-            $payload = $json['data'];
-        }
-
-        return $payload;
-    }
-
-    /**
      * Fetches access token from cache if one is
      * available, or from API if not.
      *

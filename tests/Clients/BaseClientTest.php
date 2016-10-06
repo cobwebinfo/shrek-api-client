@@ -168,29 +168,6 @@ class BaseClientTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(CacheableResponse::class, $result);
     }
 
-    public function test_parse_success_with_200_response()
-    {
-        $mocks = $this->getMocks();
-
-        $response = new Response('200', [], json_encode(['data' => ['test' => '123']]));
-
-        $this->assertEquals(['test' => '123'], $mocks['stub']->parseSuccess($response));
-    }
-
-    public function test_parse_success_with_400_response()
-    {
-        $mocks = $this->getMocks();
-
-        $fourHundredExampleReturn = array (
-            'error' => 'invalid_request',
-            'error_description' => 'The request is missing a required parameter, includes an invalid parameter value, includes a parameter more than once, or is otherwise malformed. Check the "access token" parameter.'
-        );
-
-        $response = new Response('200', [], json_encode($fourHundredExampleReturn));
-
-        $this->assertEquals(null, $mocks['stub']->parseSuccess($response));
-    }
-
     protected function getMocks()
     {
         $httpClient = $this->getMockClient();
