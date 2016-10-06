@@ -10,9 +10,13 @@ use Cobwebinfo\ShrekApiClient\Support\ConfigurableMaker;
 use Cobwebinfo\ShrekApiClient\Support\HttpRequester;
 use Cobwebinfo\ShrekApiClient\Support\Maker;
 
+/**
+ * Class ShrekServiceProviderTest
+ * 
+ * @package Cobwebinfo\ShrekApiClient\Tests
+ */
 class ShrekServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
-
     public function test_default_config_is_loaded()
     {
         $instance = $this->getMockInstance([]);
