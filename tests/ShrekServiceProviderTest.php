@@ -12,7 +12,7 @@ use Cobwebinfo\ShrekApiClient\Support\Maker;
 
 /**
  * Class ShrekServiceProviderTest
- * 
+ *
  * @package Cobwebinfo\ShrekApiClient\Tests
  */
 class ShrekServiceProviderTest extends \PHPUnit_Framework_TestCase
