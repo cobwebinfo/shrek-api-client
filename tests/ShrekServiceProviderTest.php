@@ -26,7 +26,7 @@ class ShrekServiceProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals([
             'client_id'=> 'YOUR_ID',
             'client_secret'=> 'YOUR_SECRET',
-            'cache_driver'=> 'memcache',
+            'cache_driver'=> 'none',
             'auth_uri' => "http://shrek-api.cobwebinfo.com/v1/oauth/access_token",
             'http_client' => 'guzzle',
             'http_client_opts'=> [
@@ -49,7 +49,7 @@ class ShrekServiceProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals([
             'client_id'=> 2,
             'client_secret'=> 'YOUR_SECRET',
-            'cache_driver'=>'memcache',
+            'cache_driver'=>'none',
             'auth_uri' => "http://shrek-api.cobwebinfo.com/v1/oauth/access_token",
             'http_client' => 'guzzle',
             'http_client_opts'=> [
@@ -58,11 +58,11 @@ class ShrekServiceProviderTest extends \PHPUnit_Framework_TestCase
         ], $config);
     }
 
-    public function test_default_uses_memcache()
+    public function test_default_uses_null_Store()
     {
         $instance = $this->getMockInstance([]);
 
-        $this->assertInstanceOf(MemcachedStore::class, $instance->getStore());
+        $this->assertInstanceOf(NullStore::class, $instance->getStore());
     }
 
     public function test_non_default_option()
