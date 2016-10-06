@@ -17,7 +17,7 @@ class NullStore implements \Cobwebinfo\ShrekApiClient\Cache\Contracts\Store
      */
     public function get($key)
     {
-        //
+        return false;
     }
 
     /**
@@ -30,7 +30,7 @@ class NullStore implements \Cobwebinfo\ShrekApiClient\Cache\Contracts\Store
      */
     public function many(array $keys)
     {
-        //
+        return [];
     }
 
     /**
@@ -51,30 +51,6 @@ class NullStore implements \Cobwebinfo\ShrekApiClient\Cache\Contracts\Store
      * @param float|int $minutes
      */
     public function putMany(array $values, $minutes)
-    {
-        //
-    }
-
-    /**
-     * Increment the value of an item in the cache.
-     *
-     * @param  string  $key
-     * @param  mixed   $value
-     * @return int
-     */
-    public function increment($key, $value = 1)
-    {
-        //
-    }
-
-    /**
-     * Decrement the value of an item in the cache.
-     *
-     * @param  string  $key
-     * @param  mixed   $value
-     * @return int
-     */
-    public function decrement($key, $value = 1)
     {
         //
     }
