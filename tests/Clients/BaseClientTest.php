@@ -3,6 +3,7 @@
 use Cobwebinfo\ShrekApiClient\Cache\MemcachedStore;
 use Cobwebinfo\ShrekApiClient\Clients\BaseClient;
 use Cobwebinfo\ShrekApiClient\DefaultApiConnector;
+use Cobwebinfo\ShrekApiClient\Http\CacheableResponse;
 use Cobwebinfo\ShrekApiClient\Http\GuzzleAdapter;
 use GuzzleHttp\Psr7\Response;
 use League\OAuth2\Client\Token\AccessToken;
@@ -20,7 +21,8 @@ class BaseClientTest extends \PHPUnit_Framework_TestCase
 
         $mocks['http']->shouldReceive('get')
             ->once()
-            ->with("/test", $this->getExpectedParams());
+            ->with("/test", $this->getExpectedParams())
+            ->andReturn(new Response());
 
         $mocks['stub']->shouldReceive('fromCache')
             ->andReturn(null);
@@ -45,7 +47,8 @@ class BaseClientTest extends \PHPUnit_Framework_TestCase
 
         $mocks['http']->shouldReceive('get')
             ->once()
-            ->with("/test", $params);
+            ->with("/test", $params)
+            ->andReturn(new Response());
 
         $mocks['stub']->shouldReceive('fromCache')
             ->andReturn(null);
@@ -64,7 +67,8 @@ class BaseClientTest extends \PHPUnit_Framework_TestCase
 
         $mocks['http']->shouldReceive('get')
             ->once()
-            ->with("/keywords", $this->getExpectedParams());
+            ->with("/keywords", $this->getExpectedParams())
+            ->andReturn(new Response());
 
         $mocks['stub']->shouldReceive('fromCache')
             ->andReturn(null);
@@ -82,16 +86,17 @@ class BaseClientTest extends \PHPUnit_Framework_TestCase
             ->andReturn('123');
 
         $response = new Response(200, [] ,json_encode(['test' => 123]));
+        $cacheableResponse = new CacheableResponse($response);
 
         $mocks['store']->shouldReceive('get')
             ->once()
-            ->andReturn($response);
+            ->andReturn($cacheableResponse);
 
         $mocks['stub']->shouldReceive('toCache');
 
         $result = $mocks['stub']->get('/keywords', [], ['name' => 'test']);
 
-        $this->assertEquals($response, $result);
+        $this->assertEquals($cacheableResponse, $result);
     }
 
     public function test_client_passes_query()
@@ -106,7 +111,8 @@ class BaseClientTest extends \PHPUnit_Framework_TestCase
 
         $mocks['http']->shouldReceive('get')
             ->once()
-            ->with("/keywords", $expectedParams);
+            ->with("/keywords", $expectedParams)
+            ->andReturn(new Response());
 
         $mocks['stub']->shouldReceive('fromCache')
             ->andReturn(null);
@@ -128,7 +134,8 @@ class BaseClientTest extends \PHPUnit_Framework_TestCase
 
         $mocks['http']->shouldReceive('get')
             ->once()
-            ->with("/keywords", $expectedParams);
+            ->with("/keywords", $expectedParams)
+            ->andReturn(new Response());
 
         $mocks['stub']->shouldReceive('fromCache')
             ->andReturn(null);
@@ -138,16 +145,18 @@ class BaseClientTest extends \PHPUnit_Framework_TestCase
         $mocks['stub']->get('/keywords', ['test' => '123'], []);
     }
 
-    public function test_client_returns_http_response()
+    public function test_client_returns_cacheable_response()
     {
         $mocks = $this->getMocks();
 
         $mocks['stub']->shouldReceive('fetchAccessToken')
             ->andReturn('123');
 
+        $response = new Response();
+
         $mocks['http']->shouldReceive('get')
             ->once()
-            ->andReturn(true);
+            ->andReturn($response);
 
         $mocks['stub']->shouldReceive('fromCache')
             ->andReturn(null);
@@ -156,7 +165,7 @@ class BaseClientTest extends \PHPUnit_Framework_TestCase
 
         $result = $mocks['stub']->get('/test');
 
-        $this->assertEquals(true, $result);
+        $this->assertInstanceOf(CacheableResponse::class, $result);
     }
 
     public function test_parse_success_with_200_response()

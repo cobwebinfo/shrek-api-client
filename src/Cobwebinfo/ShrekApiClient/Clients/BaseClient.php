@@ -3,6 +3,7 @@
 use Cobwebinfo\ShrekApiClient\ApiConnector;
 use Cobwebinfo\ShrekApiClient\Cache\Contracts\Store;
 use Cobwebinfo\ShrekApiClient\Cache\KeyGenerator;
+use Cobwebinfo\ShrekApiClient\Http\CacheableResponse;
 use Psr\Http\Message\ResponseInterface;
 
 abstract class BaseClient
@@ -55,21 +56,43 @@ abstract class BaseClient
         $cached = $this->fromCache($resource, $query, $accessToken);
 
         if ($cached) {
-            $response = $cached;
-        } else {
-            $headers['Authorization'] = 'Bearer ' . $accessToken;
+            return $cached;
+        }
 
-            $response = $this->connector->httpClient()->get($resource, [
-                'headers' => $headers,
-                'query' => $query
-            ]);
+        $this->addDefaultHeaders($headers, $accessToken);
 
-            //todo - need to make this cacheable. Streams are not.
+        $response = $this->connector->httpClient()->get($resource, [
+            'headers' => $headers,
+            'query' => $query
+        ]);
 
-            $this->toCache($this->getCacheKey($resource, $query, $accessToken), $response);
+        $response = $this->makeCacheable($response);
+
+        if ($response->wasSuccessful()) {
+            $key = $this->getCacheKey($resource, $query, $accessToken);
+            $this->toCache($key, $response);
         }
 
         return $response;
+    }
+
+    /**
+     * @param $headers
+     * @param $accessToken
+     */
+    protected function addDefaultHeaders(&$headers, $accessToken)
+    {
+        $headers['Authorization'] = 'Bearer ' . $accessToken;
+    }
+
+    /**
+     * @param ResponseInterface $response
+     *
+     * @return CacheableResponse
+     */
+    protected function makeCacheable(ResponseInterface $response)
+    {
+        return new CacheableResponse($response);
     }
 
     /**
