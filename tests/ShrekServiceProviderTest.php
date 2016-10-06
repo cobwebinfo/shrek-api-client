@@ -1,13 +1,14 @@
 <?php namespace Cobwebinfo\ShrekApiClient\Tests;
 
+use Cobwebinfo\ShrekApiClient\Cache\ApcStore;
 use Cobwebinfo\ShrekApiClient\Cache\MemcachedStore;
 use Cobwebinfo\ShrekApiClient\Cache\NullStore;
+use Cobwebinfo\ShrekApiClient\Factory\ApcStoreFactory;
 use Cobwebinfo\ShrekApiClient\Http\GuzzleAdapter;
 use Cobwebinfo\ShrekApiClient\ShrekServiceProvider;
 use Cobwebinfo\ShrekApiClient\Support\ConfigurableMaker;
 use Cobwebinfo\ShrekApiClient\Support\HttpRequester;
 use Cobwebinfo\ShrekApiClient\Support\Maker;
-use Prophecy\Exception\Doubler\MethodNotFoundException;
 
 class ShrekServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
@@ -76,6 +77,15 @@ class ShrekServiceProviderTest extends \PHPUnit_Framework_TestCase
         ]);
 
         $this->assertInstanceOf(NullStore::class, $instance->getStore());
+    }
+
+    public function test_apc_store()
+    {
+        $instance = $this->getMockInstance([
+            'cache_driver' => ApcStoreFactory::class
+        ]);
+
+        $this->assertInstanceOf(ApcStore::class, $instance->getStore());
     }
 
     public function test_custom_invalid_interface_throws_exception()
