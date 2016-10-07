@@ -1,10 +1,9 @@
 <?php namespace Cobwebinfo\ShrekApiClient;
 
-use AdvancedStore\Oauth2Client\Oauth2Client;
+use Cobwebinfo\ShrekApiClient\Auth\Oauth2Client\Oauth2Client;
+use Cobwebinfo\ShrekApiClient\Auth\AccessToken;
 use Cobwebinfo\ShrekApiClient\Auth\ClientCredentialsParameters;
 use Cobwebinfo\ShrekApiClient\Support\HttpRequester;
-use \League\OAuth2\Client\Provider\GenericProvider;
-use League\OAuth2\Client\Token\AccessToken;
 
 /**
  * Class DefaultApiConnector
@@ -47,7 +46,7 @@ class DefaultApiConnector implements ApiConnector
 
         $accessToken = $client->fetchAccessToken($authParams['urlAccessToken'], 'client_credentials', $authParams);
 
-        return new \Cobwebinfo\ShrekApiClient\Auth\AccessToken($accessToken);
+        return new AccessToken($accessToken);
     }
 
     /**
