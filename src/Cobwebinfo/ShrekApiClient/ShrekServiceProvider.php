@@ -38,20 +38,20 @@ class ShrekServiceProvider
      *
      * @var array
      */
-    protected $nativeStores = [
+    protected $nativeStores = array(
         'apc' => 'Cobwebinfo\ShrekApiClient\Factory\ApcStoreFactory',
         'memcache' => 'Cobwebinfo\ShrekApiClient\Factory\MemcacheStoreFactory',
         'none' => 'Cobwebinfo\ShrekApiClient\Factory\NullStoreFactory'
-    ];
+    );
 
     /**
      * Maps handles to client factories.
      *
      * @var array
      */
-    protected $nativeClients = [
+    protected $nativeClients = array(
         'guzzle' => 'Cobwebinfo\ShrekApiClient\Factory\GuzzleAdapterFactory',
-    ];
+    );
 
     /**
      * ShrekServiceProvider constructor.

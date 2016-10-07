@@ -98,7 +98,7 @@ class MemcachedStore implements Store
      */
     public function putMany(array $values, $minutes)
     {
-        $prefixedValues = [];
+        $prefixedValues = array();
 
         foreach ($values as $key => $value) {
             $prefixedValues[$this->prefix.$key] = $value;

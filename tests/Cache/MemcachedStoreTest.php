@@ -4,7 +4,7 @@ class CacheMemcachedStoreTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetReturnsNullWhenNotFound()
     {
-        $memcache = $this->getMock('StdClass', ['get', 'getResultCode']);
+        $memcache = $this->getMock('StdClass', array('get', 'getResultCode'));
         $memcache->expects($this->once())->method('get')->with($this->equalTo('foo:bar'))->will($this->returnValue(null));
         $memcache->expects($this->once())->method('getResultCode')->will($this->returnValue(1));
         $store = new \Cobwebinfo\ShrekApiClient\Cache\MemcachedStore($memcache, 'foo');
@@ -13,7 +13,7 @@ class CacheMemcachedStoreTest extends \PHPUnit_Framework_TestCase
 
     public function testMemcacheValueIsReturned()
     {
-        $memcache = $this->getMock('StdClass', ['get', 'getResultCode']);
+        $memcache = $this->getMock('StdClass', array('get', 'getResultCode'));
         $memcache->expects($this->once())->method('get')->will($this->returnValue('bar'));
         $memcache->expects($this->once())->method('getResultCode')->will($this->returnValue(0));
         $store = new \Cobwebinfo\ShrekApiClient\Cache\MemcachedStore($memcache);
@@ -25,26 +25,26 @@ class CacheMemcachedStoreTest extends \PHPUnit_Framework_TestCase
         if (! class_exists('Memcached')) {
             $this->markTestSkipped('Memcached module not installed');
         }
-        $memcache = $this->getMock('StdClass', ['getMulti', 'getResultCode']);
+        $memcache = $this->getMock('StdClass', array('getMulti', 'getResultCode'));
         $memcache->expects($this->once())->method('getMulti')->with(
-            ['foo:foo', 'foo:bar', 'foo:baz']
-        )->will($this->returnValue([
+            array('foo:foo', 'foo:bar', 'foo:baz')
+        )->will($this->returnValue(array(
             'fizz', 'buzz', 'norf',
-        ]));
+        )));
         $memcache->expects($this->once())->method('getResultCode')->will($this->returnValue(0));
         $store = new \Cobwebinfo\ShrekApiClient\Cache\MemcachedStore($memcache, 'foo');
-        $this->assertEquals([
+        $this->assertEquals(array(
             'foo'   => 'fizz',
             'bar'   => 'buzz',
             'baz'   => 'norf',
-        ], $store->many([
+        ), $store->many(array(
             'foo', 'bar', 'baz',
-        ]));
+        )));
     }
 
     public function testSetMethodProperlyCallsMemcache()
     {
-        $memcache = $this->getMock('Memcached', ['set']);
+        $memcache = $this->getMock('Memcached', array('set'));
         $memcache->expects($this->once())->method('set')->with($this->equalTo('foo'), $this->equalTo('bar'), $this->equalTo(60));
         $store = new \Cobwebinfo\ShrekApiClient\Cache\MemcachedStore($memcache);
         $store->put('foo', 'bar', 1);
@@ -52,7 +52,7 @@ class CacheMemcachedStoreTest extends \PHPUnit_Framework_TestCase
 
     public function testStoreItemForeverProperlyCallsMemcached()
     {
-        $memcache = $this->getMock('Memcached', ['set']);
+        $memcache = $this->getMock('Memcached', array('set'));
         $memcache->expects($this->once())->method('set')->with($this->equalTo('foo'), $this->equalTo('bar'), $this->equalTo(0));
         $store = new \Cobwebinfo\ShrekApiClient\Cache\MemcachedStore($memcache);
         $store->forever('foo', 'bar');
@@ -60,7 +60,7 @@ class CacheMemcachedStoreTest extends \PHPUnit_Framework_TestCase
 
     public function testForgetMethodProperlyCallsMemcache()
     {
-        $memcache = $this->getMock('Memcached', ['delete']);
+        $memcache = $this->getMock('Memcached', array('delete'));
         $memcache->expects($this->once())->method('delete')->with($this->equalTo('foo'));
         $store = new \Cobwebinfo\ShrekApiClient\Cache\MemcachedStore($memcache);
         $store->forget('foo');

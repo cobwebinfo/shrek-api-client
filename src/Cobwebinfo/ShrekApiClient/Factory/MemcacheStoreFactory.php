@@ -12,13 +12,13 @@ class MemcacheStoreFactory implements Maker
     /**
      * @var array
      */
-    protected $cacheServers =  [
-        [
+    protected $cacheServers =  array(
+        array(
             'host' => '127.0.0.1',
             'port' => 11211,
             'weight' => 1
-        ]
-    ];
+        )
+    );
 
     /**
      * @return \Cobwebinfo\ShrekApiClient\Cache\MemcachedStore

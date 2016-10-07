@@ -17,9 +17,9 @@ class NullStoreTest extends \PHPUnit_Framework_TestCase
     {
         $store = new NullStore();
 
-        $store->putMany(['test' => 1, 'xyz' => 2], 60);
+        $store->putMany(array('test' => 1, 'xyz' => 2), 60);
 
-        $this->assertEquals([], $store->many(['test', 'xyz']));
+        $this->assertEquals(array(), $store->many(array('test', 'xyz')));
     }
 
     public function test_prefix_returns_empty()

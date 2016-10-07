@@ -24,13 +24,13 @@ abstract class OAuthParameters implements Arrayable
      */
     public function toArray()
     {
-        return [
+        return array(
             'clientId' => $this->clientId,
             'clientSecret' => $this->clientSecret,
             'redirectUri' => $this->redirectUri,
             'urlAuthorize' => $this->urlAuthorize,
             'urlAccessToken' => $this->urlAccessToken,
             'urlResourceOwnerDetails' => $this->urlResourceOwnerDetails
-        ];
+        );
     }
 }

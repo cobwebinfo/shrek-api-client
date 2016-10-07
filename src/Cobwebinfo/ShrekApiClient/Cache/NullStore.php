@@ -7,7 +7,7 @@ class NullStore implements \Cobwebinfo\ShrekApiClient\Cache\Contracts\Store
      *
      * @var array
      */
-    protected $storage = [];
+    protected $storage = array();
 
     /**
      * Retrieve an item from the cache by key.
@@ -30,7 +30,7 @@ class NullStore implements \Cobwebinfo\ShrekApiClient\Cache\Contracts\Store
      */
     public function many(array $keys)
     {
-        return [];
+        return array();
     }
 
     /**

@@ -14,10 +14,10 @@ class MockQuery extends Query {
         parent::__construct($initValues);
     }
 
-    protected $relations = [
+    protected $relations = array(
         'one',
         'two'
-    ];
+    );
 }
 
 class QueryTest extends \PHPUnit_Framework_TestCase
@@ -44,9 +44,9 @@ class QueryTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('Cobwebinfo\ShrekApiClient\Exception\InvalidParameterException');
 
-        $instance = new MockQuery([
-            'relations' => []
-        ]);
+        $instance = new MockQuery(array(
+            'relations' => array()
+        ));
     }
 
     public function test_has_without_params_adds_query()
@@ -160,7 +160,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
     {
         $instance = $this->getMockInstance();
 
-        $result = $instance->select(['one', 'two'])
+        $result = $instance->select(array('one', 'two'))
             ->toArray();
 
         $this->assertEquals('one, two', $result['fields']);
@@ -171,7 +171,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
     {
         $instance = $this->getMockInstance();
 
-        $result = $instance->select(['one', 'two'])
+        $result = $instance->select(array('one', 'two'))
             ->toArray();
 
         $this->assertEquals('one, two', $result['fields']);
@@ -222,10 +222,10 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $result = $instance->where('id', 1)
             ->toArray();
 
-        $this->assertEquals([
+        $this->assertEquals(array(
             'value' => 1,
             'operator' => '=='
-        ], $result['id']);
+        ), $result['id']);
     }
 
     public function test_where_operator_can_be_changed()
@@ -235,14 +235,14 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $result = $instance->where('id', 2, '>=')
             ->toArray();
 
-        $this->assertEquals([
+        $this->assertEquals(array(
             'value' => 2,
             'operator' => '>='
-        ], $result['id']);
+        ), $result['id']);
     }
 
     protected function getMockInstance()
     {
-        return new MockQuery([]);
+        return new MockQuery(array());
     }
 }

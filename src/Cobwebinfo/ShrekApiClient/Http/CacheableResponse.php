@@ -12,7 +12,7 @@ class CacheableResponse
     /**
      * @var array
      */
-    public $headers = [];
+    public $headers = array();
 
     /**
      * @var

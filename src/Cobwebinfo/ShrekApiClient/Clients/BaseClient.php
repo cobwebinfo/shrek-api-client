@@ -49,7 +49,7 @@ abstract class BaseClient
      *
      * @return ResponseInterface
      */
-    public function get($resource, array $headers = [], array $query = [])
+    public function get($resource, array $headers = array(), array $query = array())
     {
         $accessToken = $this->fetchAccessToken();
 
@@ -61,10 +61,10 @@ abstract class BaseClient
 
         $this->addDefaultHeaders($headers, $accessToken);
 
-        $response = $this->connector->httpClient()->get($resource, [
+        $response = $this->connector->httpClient()->get($resource, array(
             'headers' => $headers,
             'query' => $query
-        ]);
+        ));
 
         $response = $this->makeCacheable($response);
 

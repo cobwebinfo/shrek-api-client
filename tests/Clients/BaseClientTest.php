@@ -40,7 +40,7 @@ class BaseClientTest extends \PHPUnit_Framework_TestCase
     {
         $mocks = $this->getMocks();
 
-        $token = new AccessToken(['access_token' => 456, 'expires' => '123']);
+        $token = new AccessToken(array('access_token' => 456, 'expires' => '123'));
 
         $mocks['store']->shouldReceive('get')
             ->with('access_token')
@@ -97,7 +97,7 @@ class BaseClientTest extends \PHPUnit_Framework_TestCase
         $mocks['stub']->shouldReceive('fetchAccessToken')
             ->andReturn('123');
 
-        $response = new Response(200, [] ,json_encode(['test' => 123]));
+        $response = new Response(200, array() ,json_encode(array('test' => 123)));
         $cacheableResponse = new CacheableResponse($response);
 
         $mocks['store']->shouldReceive('get')
@@ -106,7 +106,7 @@ class BaseClientTest extends \PHPUnit_Framework_TestCase
 
         $mocks['stub']->shouldReceive('toCache');
 
-        $result = $mocks['stub']->get('/keywords', [], ['name' => 'test']);
+        $result = $mocks['stub']->get('/keywords', array(), array('name' => 'test'));
 
         $this->assertEquals($cacheableResponse, $result);
     }
@@ -133,7 +133,7 @@ class BaseClientTest extends \PHPUnit_Framework_TestCase
 
         $mocks['stub']->shouldReceive('toCache');
 
-        $result = $mocks['stub']->get('/keywords', [], ['name' => 'test']);
+        $result = $mocks['stub']->get('/keywords', array(), array('name' => 'test'));
 
         $this->assertEquals(new CacheableResponse($response), $result);
     }
@@ -160,7 +160,7 @@ class BaseClientTest extends \PHPUnit_Framework_TestCase
 
         $mocks['stub']->shouldReceive('toCache');
 
-        $result =  $mocks['stub']->get('/keywords', ['test' => '123'], []);
+        $result =  $mocks['stub']->get('/keywords', array('test' => '123'), array());
 
         $this->assertEquals(new CacheableResponse($response), $result);
     }
@@ -196,16 +196,16 @@ class BaseClientTest extends \PHPUnit_Framework_TestCase
 
         $store = $this->getMockStore();
 
-        $stub = \Mockery::mock('Cobwebinfo\ShrekApiClient\Tests\StubClient', [$connector, $store])
+        $stub = \Mockery::mock('Cobwebinfo\ShrekApiClient\Tests\StubClient', array($connector, $store))
             ->shouldAllowMockingProtectedMethods()
             ->makePartial();
 
-        return [
+        return array(
             'stub' => $stub,
             'store' => $store,
             'http' => $httpClient,
             'connector' => $connector
-        ];
+        );
     }
 
     /**
@@ -213,7 +213,7 @@ class BaseClientTest extends \PHPUnit_Framework_TestCase
      */
     protected function getMockClient()
     {
-        $client = \Mockery::mock('Cobwebinfo\ShrekApiClient\Http\GuzzleAdapter' . '[get]', [[]]);
+        $client = \Mockery::mock('Cobwebinfo\ShrekApiClient\Http\GuzzleAdapter' . '[get]', array(array()));
 
         return $client;
     }

@@ -8,9 +8,9 @@ class KeyGeneratorTest extends \PHPUnit_Framework_TestCase
     {
         $generator = new KeyGenerator();
 
-        $expectedHash = crc32(serialize(['test' => 123, 'client_access_token' => 4321]));
+        $expectedHash = crc32(serialize(array('test' => 123, 'client_access_token' => 4321)));
 
-        $key = $generator->generate('keyword', ['test' => 123], 4321);
+        $key = $generator->generate('keyword', array('test' => 123), 4321);
 
         $this->assertEquals('cobweb_keyword_'.$expectedHash, $key);
     }
@@ -19,9 +19,9 @@ class KeyGeneratorTest extends \PHPUnit_Framework_TestCase
     {
         $generator = new KeyGenerator();
 
-        $expectedHash = crc32(serialize(['test' => 123, 'x' => false, 'client_access_token' => 4321]));
+        $expectedHash = crc32(serialize(array('test' => 123, 'x' => false, 'client_access_token' => 4321)));
 
-        $key = $generator->generate('keyword/', ['test' => 123, 'x' => false], 4321);
+        $key = $generator->generate('keyword/', array('test' => 123, 'x' => false), 4321);
 
         $this->assertEquals('cobweb_keyword/_' . $expectedHash, $key);
     }
@@ -31,9 +31,9 @@ class KeyGeneratorTest extends \PHPUnit_Framework_TestCase
     {
         $generator = new KeyGenerator();
 
-        $expectedHash = crc32(serialize(['test' => 123, 'x' => ['y' => 1], 'client_access_token' => 4321]));
+        $expectedHash = crc32(serialize(array('test' => 123, 'x' => array('y' => 1), 'client_access_token' => 4321)));
 
-        $key = $generator->generate('keyword/', ['test' => 123, 'x' => ['y' => 1]], 4321);
+        $key = $generator->generate('keyword/', array('test' => 123, 'x' => array('y' => 1)), 4321);
 
         $this->assertEquals('cobweb_keyword/_'.$expectedHash, $key);
     }

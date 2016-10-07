@@ -25,7 +25,7 @@ class MemcachedConnectorTest extends \PHPUnit_Framework_TestCase
      */
     public function testExceptionThrownOnBadConnection()
     {
-        $memcached = $this->memcachedMockWithAddServer(['255.255.255']);
+        $memcached = $this->memcachedMockWithAddServer(array('255.255.255'));
         $connector = $this->connectorMock();
         $connector->expects($this->once())
             ->method('createMemcachedInstance')
@@ -49,10 +49,10 @@ class MemcachedConnectorTest extends \PHPUnit_Framework_TestCase
         if (! class_exists('Memcached')) {
             $this->markTestSkipped('Memcached module not installed');
         }
-        $validOptions = [
+        $validOptions = array(
             Memcached::OPT_NO_BLOCK => true,
             Memcached::OPT_CONNECT_TIMEOUT => 2000,
-        ];
+        );
         $memcached = $this->memcachedMockWithAddServer();
         $memcached->shouldReceive('setOptions')->once()->andReturn(true);
         $connector = $this->connectorMock();
@@ -67,7 +67,7 @@ class MemcachedConnectorTest extends \PHPUnit_Framework_TestCase
         if (! class_exists('Memcached')) {
             $this->markTestSkipped('Memcached module not installed');
         }
-        $saslCredentials = ['foo', 'bar'];
+        $saslCredentials = array('foo', 'bar');
         $memcached = $this->memcachedMockWithAddServer();
         $memcached->shouldReceive('setOption')->once()->with(Memcached::OPT_BINARY_PROTOCOL, true)->andReturn(true);
         $memcached->shouldReceive('setSaslAuthData')
@@ -75,26 +75,26 @@ class MemcachedConnectorTest extends \PHPUnit_Framework_TestCase
             ->andReturn(true);
         $connector = $this->connectorMock();
         $connector->expects($this->once())->method('createMemcachedInstance')->will($this->returnValue($memcached));
-        $result = $this->connect($connector, false, [], $saslCredentials);
+        $result = $this->connect($connector, false, array(), $saslCredentials);
         $this->assertSame($result, $memcached);
     }
-    protected function memcachedMockWithAddServer($returnedVersion = [])
+    protected function memcachedMockWithAddServer($returnedVersion = array())
     {
         $memcached = m::mock('stdClass');
         $memcached->shouldReceive('addServer')->once()->with($this->getHost(), $this->getPort(), $this->getWeight());
         $memcached->shouldReceive('getVersion')->once()->andReturn($returnedVersion);
-        $memcached->shouldReceive('getServerList')->once()->andReturn([]);
+        $memcached->shouldReceive('getServerList')->once()->andReturn(array());
         return $memcached;
     }
     protected function connectorMock()
     {
-        return $this->getMockBuilder('Cobwebinfo\ShrekApiClient\Cache\MemcachedConnector')->setMethods(['createMemcachedInstance'])->getMock();
+        return $this->getMockBuilder('Cobwebinfo\ShrekApiClient\Cache\MemcachedConnector')->setMethods(array('createMemcachedInstance'))->getMock();
     }
     protected function connect(
         $connector,
         $persistentConnectionId = false,
-        array $customOptions = [],
-        array $saslCredentials = []
+        array $customOptions = array(),
+        array $saslCredentials = array()
     ) {
         return $connector->connect(
             $this->getServers(),
@@ -105,7 +105,7 @@ class MemcachedConnectorTest extends \PHPUnit_Framework_TestCase
     }
     protected function getServers()
     {
-        return [['host' => $this->getHost(), 'port' => $this->getPort(), 'weight' => $this->getWeight()]];
+        return array(array('host' => $this->getHost(), 'port' => $this->getPort(), 'weight' => $this->getWeight()));
     }
     protected function getHost()
     {

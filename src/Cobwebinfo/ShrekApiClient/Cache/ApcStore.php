@@ -69,7 +69,7 @@ class ApcStore implements Store
      */
     public function many(array $keys)
     {
-        $return = [];
+        $return = array();
         foreach ($keys as $key) {
             $return[$key] = $this->get($key);
         }

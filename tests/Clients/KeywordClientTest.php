@@ -15,10 +15,10 @@ class KeywordClientTest extends \PHPUnit_Framework_TestCase
 
         $mock->shouldReceive('get')
             ->once()
-            ->with('keywords/' . 23, [], [])
+            ->with('keywords/' . 23, array(), array())
             ->andReturn($response);
 
-        $result =  $mock->one(23, [], []);
+        $result =  $mock->one(23, array(), array());
 
         $this->assertEquals($response, $result);
     }
@@ -31,10 +31,10 @@ class KeywordClientTest extends \PHPUnit_Framework_TestCase
 
         $mock->shouldReceive('get')
             ->once()
-            ->with('keywords/', [], ['page' => 0, 'per_page' => 1])
+            ->with('keywords/', array(), array('page' => 0, 'per_page' => 1))
             ->andReturn($response);
 
-        $result = $mock->paginate(0, 1, []);
+        $result = $mock->paginate(0, 1, array());
 
         $this->assertEquals($response, $result);
     }

@@ -18,7 +18,7 @@ class MemcachedConnector
      */
     public function connect(
         array $servers, $connectionId = null,
-        array $options = [], array $credentials = []
+        array $options = array(), array $credentials = array()
     ) {
         $memcached = $this->getMemcached(
             $connectionId, $credentials, $options

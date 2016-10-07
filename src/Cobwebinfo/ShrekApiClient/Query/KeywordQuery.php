@@ -12,10 +12,10 @@ class KeywordQuery extends Query
     /**
      * @var array
      */
-    protected $relations = [
+    protected $relations = array(
         'organisations',
         'snippets'
-    ];
+    );
 
     /**
      * KeywordQuery constructor.

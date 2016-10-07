@@ -95,10 +95,10 @@ class CacheableResponseTest extends \PHPUnit_Framework_TestCase
      */
     protected function getResponseHeaders()
     {
-        return $responseHeaders = [
+        return $responseHeaders = array(
             'Date' => 'Thu, 06 Oct 2016 09:11:28 GMT',
             'Content-Type' => 'text/html; charset=UTF-8'
-        ];
+        );
     }
 
     /**
@@ -106,12 +106,12 @@ class CacheableResponseTest extends \PHPUnit_Framework_TestCase
      */
     protected function getBody()
     {
-        return $body = [
+        return $body = array(
             'test' => 123,
-            'test2' => [
+            'test2' => array(
                 '123',
                 '456'
-            ]
-        ];
+            )
+        );
     }
 }

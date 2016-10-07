@@ -18,7 +18,7 @@ abstract class Query implements Arrayable
      *
      * @var array
      */
-    protected $relations = [];
+    protected $relations = array();
 
     /**
      * Search term.
@@ -33,21 +33,21 @@ abstract class Query implements Arrayable
      *
      * @var array[array]
      */
-    protected $has = [];
+    protected $has = array();
 
     /**
      * Select relations with keyword/s.
      *
      * @var array[array]
      */
-    protected $with = [];
+    protected $with = array();
 
     /**
      * Fields to include.
      *
      * @var array[string]
      */
-    protected $fields = [];
+    protected $fields = array();
 
     /**
      * @var
@@ -172,12 +172,12 @@ abstract class Query implements Arrayable
      */
     protected function getQueryProperties()
     {
-        $payload = [
+        $payload = array(
             'has' => $this->has,
             'with' => $this->with,
             'q' => $this->q,
             'fields' => $this->fields
-        ];
+        );
 
         return $payload;
     }
@@ -216,11 +216,11 @@ abstract class Query implements Arrayable
             throw new InvalidRelationException(ucfirst($name) . ' is not a valid relation.');
         }
 
-        $this->has[$name] = [
+        $this->has[$name] = array(
             'column' => $column,
             'value' => $value,
             'operator' => $operator,
-        ];
+        );
 
         return $this;
     }
@@ -259,11 +259,11 @@ abstract class Query implements Arrayable
             throw new InvalidRelationException(ucfirst($name) . ' is not a valid relation.');
         }
 
-        $this->with[$name] = [
+        $this->with[$name] = array(
             'column' => $column,
             'value' => $value,
             'operator' => $operator,
-        ];
+        );
 
         return $this;
     }
@@ -315,10 +315,10 @@ abstract class Query implements Arrayable
             throw new InvalidParameterException($column . ' is not a valid column.');
         }
 
-        $this->model->{$column} = [
+        $this->model->{$column} = array(
             'value' => $value,
             'operator' => $operator
-        ];
+        );
 
         return $this;
     }

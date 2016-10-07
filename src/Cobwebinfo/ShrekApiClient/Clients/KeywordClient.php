@@ -16,20 +16,20 @@ class KeywordClient extends BaseClient {
      * @param $id
      * @return mixed
      */
-    public function one($id, $params = [])
+    public function one($id, $params = array())
     {
-        return $this->get($this->resource . $id, [], $params);
+        return $this->get($this->resource . $id, array(), $params);
     }
 
     /**
      * @param $params
      * @return mixed
      */
-    public function paginate($page, $take, $params = [])
+    public function paginate($page, $take, $params = array())
     {
         $params['page'] = $page;
         $params['per_page'] = $take;
 
-        return $this->get($this->resource, [], $params);
+        return $this->get($this->resource, array(), $params);
     }
 }

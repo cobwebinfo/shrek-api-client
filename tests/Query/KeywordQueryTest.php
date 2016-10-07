@@ -9,7 +9,7 @@ class KeywordQueryTest extends \PHPUnit_Framework_TestCase
        $init = array(
            'id' => 10,
            'name' => 'Test',
-           'has' => ['documents']
+           'has' => array('documents')
        );
 
         $keywordQuery = new KeywordQuery($init);
@@ -18,7 +18,7 @@ class KeywordQueryTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(10, $values['id']);
         $this->assertEquals('Test', $values['name']);
-        $this->assertEquals(['documents'], $values['has']);
+        $this->assertEquals(array('documents'), $values['has']);
     }
 
     public function test_array_properties_support_string()
@@ -31,13 +31,13 @@ class KeywordQueryTest extends \PHPUnit_Framework_TestCase
 
         $values = $keywordQuery->toArray();
 
-        $this->assertEquals(['documents'], $values['has']);
+        $this->assertEquals(array('documents'), $values['has']);
     }
 
     public function test_fields_returned_as_string()
     {
         $init = array(
-            'fields' => ['id, name']
+            'fields' => array('id, name')
         );
 
         $keywordQuery = new KeywordQuery($init);
@@ -50,14 +50,14 @@ class KeywordQueryTest extends \PHPUnit_Framework_TestCase
     public function test_array_properties_support_multi()
     {
         $init = array(
-            'has' => ['documents', 'organisations']
+            'has' => array('documents', 'organisations')
         );
 
         $keywordQuery = new KeywordQuery($init);
 
         $values = $keywordQuery->toArray();
 
-        $this->assertEquals(['documents', 'organisations'], $values['has']);
+        $this->assertEquals(array('documents', 'organisations'), $values['has']);
     }
 
     public function test_invalid_properties_throw_exception()
@@ -76,7 +76,7 @@ class KeywordQueryTest extends \PHPUnit_Framework_TestCase
         $init = array(
             'id' => 10,
             'name' => 'Test',
-            'has' => ['documents']
+            'has' => array('documents')
         );
 
         $keywordQuery = new KeywordQuery($init);
