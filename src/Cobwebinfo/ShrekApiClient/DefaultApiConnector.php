@@ -1,8 +1,8 @@
 <?php namespace Cobwebinfo\ShrekApiClient;
 
+use AdvancedStore\Oauth2Client\Oauth2Client;
 use Cobwebinfo\ShrekApiClient\Auth\ClientCredentialsParameters;
 use Cobwebinfo\ShrekApiClient\Support\HttpRequester;
-use GuzzleHttp\ClientInterface;
 use \League\OAuth2\Client\Provider\GenericProvider;
 use League\OAuth2\Client\Token\AccessToken;
 
@@ -14,7 +14,7 @@ use League\OAuth2\Client\Token\AccessToken;
 class DefaultApiConnector implements ApiConnector
 {
     /**
-     * @var ClientInterface
+     * @var HttpRequester
      */
     protected $httpClient;
 
@@ -35,17 +35,19 @@ class DefaultApiConnector implements ApiConnector
     }
 
     /**
-     * @return \League\OAuth2\Client\Token\AccessToken
+     * @return Auth\AccessToken
      */
     public function fetchAccessToken()
     {
         $authParams = new ClientCredentialsParameters($this->config);
 
-        $provider = new GenericProvider($authParams->toArray());
+        $authParams = $authParams->toArray();
 
-        $accessToken = $provider->getAccessToken('client_credentials');
+        $client = new Oauth2Client($authParams['clientId'], $authParams['clientSecret']);
 
-        return $accessToken;
+        $accessToken = $client->fetchAccessToken($authParams['urlAccessToken'], 'client_credentials', $authParams);
+
+        return new \Cobwebinfo\ShrekApiClient\Auth\AccessToken($accessToken);
     }
 
     /**

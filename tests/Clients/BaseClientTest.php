@@ -6,7 +6,7 @@ use Cobwebinfo\ShrekApiClient\DefaultApiConnector;
 use Cobwebinfo\ShrekApiClient\Http\CacheableResponse;
 use Cobwebinfo\ShrekApiClient\Http\GuzzleAdapter;
 use GuzzleHttp\Psr7\Response;
-use League\OAuth2\Client\Token\AccessToken;
+use Cobwebinfo\ShrekApiClient\Auth\AccessToken;
 
 class StubClient extends BaseClient {}
 
