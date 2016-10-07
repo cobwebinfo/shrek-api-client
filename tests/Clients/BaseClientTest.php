@@ -185,7 +185,7 @@ class BaseClientTest extends \PHPUnit_Framework_TestCase
 
         $result = $mocks['stub']->get('/test');
 
-        $this->assertInstanceOf(CacheableResponse::class, $result);
+        $this->assertInstanceOf('Cobwebinfo\ShrekApiClient\Http\CacheableResponse', $result);
     }
 
     protected function getMocks()
@@ -196,7 +196,7 @@ class BaseClientTest extends \PHPUnit_Framework_TestCase
 
         $store = $this->getMockStore();
 
-        $stub = \Mockery::mock(StubClient::class, [$connector, $store])
+        $stub = \Mockery::mock('Cobwebinfo\ShrekApiClient\Tests\StubClient', [$connector, $store])
             ->shouldAllowMockingProtectedMethods()
             ->makePartial();
 
@@ -213,7 +213,7 @@ class BaseClientTest extends \PHPUnit_Framework_TestCase
      */
     protected function getMockClient()
     {
-        $client = \Mockery::mock(GuzzleAdapter::class . '[get]', [[]]);
+        $client = \Mockery::mock('Cobwebinfo\ShrekApiClient\Http\GuzzleAdapter' . '[get]', [[]]);
 
         return $client;
     }
@@ -223,7 +223,7 @@ class BaseClientTest extends \PHPUnit_Framework_TestCase
      */
     protected function getMockConnector($http)
     {
-        $connector = \Mockery::mock(DefaultApiConnector::class)
+        $connector = \Mockery::mock('Cobwebinfo\ShrekApiClient\DefaultApiConnector')
             ->makePartial();
 
         $connector->shouldReceive('httpClient')
@@ -237,7 +237,7 @@ class BaseClientTest extends \PHPUnit_Framework_TestCase
      */
     protected function getMockStore()
     {
-        $store = \Mockery::mock(MemcachedStore::class)
+        $store = \Mockery::mock('Cobwebinfo\ShrekApiClient\Cache\MemcachedStore')
             ->makePartial();
 
         return $store;

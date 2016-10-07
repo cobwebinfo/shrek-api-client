@@ -39,9 +39,9 @@ class ShrekServiceProvider
      * @var array
      */
     protected $nativeStores = [
-        'apc' => ApcStoreFactory::class,
-        'memcache' => MemcacheStoreFactory::class,
-        'none' => NullStoreFactory::class
+        'apc' => 'Cobwebinfo\ShrekApiClient\Factory\ApcStoreFactory',
+        'memcache' => 'Cobwebinfo\ShrekApiClient\Factory\MemcacheStoreFactory',
+        'none' => 'Cobwebinfo\ShrekApiClient\Factory\NullStoreFactory'
     ];
 
     /**
@@ -50,7 +50,7 @@ class ShrekServiceProvider
      * @var array
      */
     protected $nativeClients = [
-        'guzzle' => GuzzleAdapterFactory::class,
+        'guzzle' => 'Cobwebinfo\ShrekApiClient\Factory\GuzzleAdapterFactory',
     ];
 
     /**
@@ -116,7 +116,7 @@ class ShrekServiceProvider
         $factory = $this->resolveFactory($handle, $this->nativeClients);
 
         if (!$factory instanceof ConfigurableMaker) {
-            throw new MethodNotFoundException('Client factory must implement' . ConfigurableMaker::class);
+            throw new MethodNotFoundException('Client factory must implement Cobwebinfo\ShrekApiClient\Support\ConfigurableMaker');
         }
 
         $client = $factory->make($opts);
@@ -124,7 +124,7 @@ class ShrekServiceProvider
         if ($client instanceof HttpRequester) {
             return $client;
         } else {
-            throw new MethodNotFoundException('Object returned by factory must implement' . HttpRequester::class);
+            throw new MethodNotFoundException('Object returned by factory must implement Cobwebinfo\ShrekApiClient\Support\HttpRequester');
         }
     }
 

@@ -1,7 +1,5 @@
 <?php namespace Cobwebinfo\ShrekApiClient\Support;
 
-use GuzzleHttp\Exception\BadResponseException;
-
 /**
  * Interface HttpRequester
  *

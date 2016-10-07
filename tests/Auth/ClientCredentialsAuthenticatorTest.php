@@ -8,7 +8,7 @@ class ClientCredentialsAuthenticatorTest extends \PHPUnit_Framework_TestCase
 {
     public function test_invalid_client_id_throws_exception()
     {
-        $this->setExpectedException(InvalidParameterException::class);
+        $this->setExpectedException('Cobwebinfo\ShrekApiClient\Exception\InvalidParameterException');
 
         $config = Yaml::parse(file_get_contents(__DIR__ . '/../../src/Cobwebinfo/ShrekApiClient/config.yaml'));
 
@@ -19,7 +19,7 @@ class ClientCredentialsAuthenticatorTest extends \PHPUnit_Framework_TestCase
 
     public function test_invalid_client_secret_throws_exception()
     {
-        $this->setExpectedException(InvalidParameterException::class);
+        $this->setExpectedException('Cobwebinfo\ShrekApiClient\Exception\InvalidParameterException');
 
         $config = Yaml::parse(file_get_contents(__DIR__ . '/../../src/Cobwebinfo/ShrekApiClient/config.yaml'));
 

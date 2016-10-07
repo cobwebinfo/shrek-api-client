@@ -28,21 +28,21 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 
         $result = $instance->has('one');
 
-        $this->assertInstanceOf(MockQuery::class, $result);
+        $this->assertInstanceOf('Cobwebinfo\ShrekApiClient\Tests\MockQuery', $result);
     }
 
     public function test_has_throws_exception_on_bad_relation()
     {
         $instance = $this->getMockInstance();
 
-        $this->setExpectedException(InvalidRelationException::class);
+        $this->setExpectedException('Cobwebinfo\ShrekApiClient\Exception\InvalidRelationException');
 
         $result = $instance->has('test');
     }
 
     public function test_throws_exception_on_overwrite_relations()
     {
-        $this->setExpectedException(InvalidParameterException::class);
+        $this->setExpectedException('Cobwebinfo\ShrekApiClient\Exception\InvalidParameterException');
 
         $instance = new MockQuery([
             'relations' => []
@@ -95,14 +95,14 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 
         $result = $instance->with('one');
 
-        $this->assertInstanceOf(MockQuery::class, $result);
+        $this->assertInstanceOf('Cobwebinfo\ShrekApiClient\Tests\MockQuery', $result);
     }
 
     public function test_with_throws_exception_on_bad_relation()
     {
         $instance = $this->getMockInstance();
 
-        $this->setExpectedException(InvalidRelationException::class);
+        $this->setExpectedException('Cobwebinfo\ShrekApiClient\Exception\InvalidRelationException');
 
         $result = $instance->with('test');
     }
@@ -153,7 +153,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 
         $result = $instance->select('one');
 
-        $this->assertInstanceOf(MockQuery::class, $result);
+        $this->assertInstanceOf('Cobwebinfo\ShrekApiClient\Tests\MockQuery', $result);
     }
 
     public function test_select()
@@ -184,7 +184,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 
         $result = $instance->search('test');
 
-        $this->assertInstanceOf(MockQuery::class, $result);
+        $this->assertInstanceOf('Cobwebinfo\ShrekApiClient\Tests\MockQuery', $result);
     }
 
     public function test_search()
@@ -203,14 +203,14 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 
         $result = $instance->where('id', 1);
 
-        $this->assertInstanceOf(MockQuery::class, $result);
+        $this->assertInstanceOf('Cobwebinfo\ShrekApiClient\Tests\MockQuery', $result);
     }
 
     public function test_where_throws_exception_on_invalid_column()
     {
         $instance = $this->getMockInstance();
 
-        $this->setExpectedException(InvalidParameterException::class);
+        $this->setExpectedException('Cobwebinfo\ShrekApiClient\Exception\InvalidParameterException');
 
         $result = $instance->where('test', 1);
     }

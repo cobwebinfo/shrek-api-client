@@ -1,11 +1,7 @@
 <?php namespace Cobwebinfo\ShrekApiClient\Tests;
 
-use Cobwebinfo\ShrekApiClient\Cache\MemcachedStore;
-use Cobwebinfo\ShrekApiClient\Clients\BaseClient;
 use Cobwebinfo\ShrekApiClient\Clients\KeywordClient;
-use Cobwebinfo\ShrekApiClient\DefaultApiConnector;
 use Cobwebinfo\ShrekApiClient\Http\CacheableResponse;
-use Cobwebinfo\ShrekApiClient\Http\GuzzleAdapter;
 use GuzzleHttp\Psr7\Response;
 use League\OAuth2\Client\Token\AccessToken;
 
@@ -48,7 +44,7 @@ class KeywordClientTest extends \PHPUnit_Framework_TestCase
      */
     protected function getClientMock()
     {
-        return \Mockery::mock(KeywordClient::class)
+        return \Mockery::mock('Cobwebinfo\ShrekApiClient\Clients\KeywordClient')
             ->makePartial();
     }
 }

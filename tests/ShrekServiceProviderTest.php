@@ -62,7 +62,7 @@ class ShrekServiceProviderTest extends \PHPUnit_Framework_TestCase
     {
         $instance = $this->getMockInstance([]);
 
-        $this->assertInstanceOf(NullStore::class, $instance->getStore());
+        $this->assertInstanceOf('Cobwebinfo\ShrekApiClient\Cache\NullStore', $instance->getStore());
     }
 
     public function test_non_default_option()
@@ -71,42 +71,42 @@ class ShrekServiceProviderTest extends \PHPUnit_Framework_TestCase
             'cache_driver' => 'none'
         ]);
 
-        $this->assertInstanceOf(NullStore::class, $instance->getStore());
+        $this->assertInstanceOf('Cobwebinfo\ShrekApiClient\Cache\NullStore', $instance->getStore());
     }
 
     public function test_custom_option()
     {
         $instance = $this->getMockInstance([
-            'cache_driver' => MockFactory::class
+            'cache_driver' => 'Cobwebinfo\ShrekApiClient\Tests\MockFactory'
         ]);
 
-        $this->assertInstanceOf(NullStore::class, $instance->getStore());
+        $this->assertInstanceOf('Cobwebinfo\ShrekApiClient\Cache\NullStore', $instance->getStore());
     }
 
     public function test_apc_store()
     {
         $instance = $this->getMockInstance([
-            'cache_driver' => ApcStoreFactory::class
+            'cache_driver' => 'Cobwebinfo\ShrekApiClient\Factory\ApcStoreFactory'
         ]);
 
-        $this->assertInstanceOf(ApcStore::class, $instance->getStore());
+        $this->assertInstanceOf('Cobwebinfo\ShrekApiClient\Cache\ApcStore', $instance->getStore());
     }
 
     public function test_custom_invalid_interface_throws_exception()
     {
-        $this->setExpectedException(\Cobwebinfo\ShrekApiClient\Exception\MethodNotFoundException::class);
+        $this->setExpectedException('\Cobwebinfo\ShrekApiClient\Exception\MethodNotFoundException');
 
         $instance = $this->getMockInstance([
-            'cache_driver' => InvalidMockFactory::class
+            'cache_driver' => 'Cobwebinfo\ShrekApiClient\Tests\InvalidMockFactory'
         ]);
     }
 
     public function test_custom_invalid_return_value_throws_exception()
     {
-        $this->setExpectedException(\Cobwebinfo\ShrekApiClient\Exception\MethodNotFoundException::class);
+        $this->setExpectedException('\Cobwebinfo\ShrekApiClient\Exception\MethodNotFoundException');
 
         $instance = $this->getMockInstance([
-            'cache_driver' => InvalidMockFactory2::class
+            'cache_driver' => 'Cobwebinfo\ShrekApiClient\Tests\InvalidMockFactory2'
         ]);
     }
 
@@ -114,28 +114,28 @@ class ShrekServiceProviderTest extends \PHPUnit_Framework_TestCase
     {
         $instance = $this->getMockInstance([]);
 
-        $this->assertInstanceOf(GuzzleAdapter::class, $instance->getConnector()->httpClient());
+        $this->assertInstanceOf('Cobwebinfo\ShrekApiClient\Http\GuzzleAdapter', $instance->getConnector()->httpClient());
     }
 
     public function test_custom_http_client()
     {
         $instance = $this->getMockInstance([
-            'http_client' => MockHttpClientFactory::class
+            'http_client' => 'Cobwebinfo\ShrekApiClient\Tests\MockHttpClientFactory'
         ]);
 
-        $this->assertInstanceOf(MockHttpClient::class, $instance->getConnector()->httpClient());
+        $this->assertInstanceOf('Cobwebinfo\ShrekApiClient\Tests\MockHttpClient', $instance->getConnector()->httpClient());
     }
 
     public function test_custom_http_opts()
     {
         $instance = $this->getMockInstance([
-            'http_client' => MockHttpClientFactory::class,
+            'http_client' => 'Cobwebinfo\ShrekApiClient\Tests\MockHttpClientFactory',
             'http_client_opts' => [
                 'base_uri' => 'http://CONFIGURED.com'
             ]
         ]);
 
-        $this->assertInstanceOf(MockHttpClient::class, $instance->getConnector()->httpClient());
+        $this->assertInstanceOf('Cobwebinfo\ShrekApiClient\Tests\MockHttpClient', $instance->getConnector()->httpClient());
 
        $this->assertEquals('http://CONFIGURED.com', $instance->getConnector()->httpClient()->get('', []));
 
