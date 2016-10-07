@@ -21,7 +21,7 @@ class GuzzleAdapter implements HttpRequester
      */
     public function __construct(array $options)
     {
-        $options['exceptions'] = false;git add 
+        $options['exceptions'] = false;
 
         $this->client = new Client($options);
     }
