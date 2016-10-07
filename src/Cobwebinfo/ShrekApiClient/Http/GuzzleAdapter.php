@@ -1,6 +1,7 @@
 <?php namespace Cobwebinfo\ShrekApiClient\Http;
 
 use Cobwebinfo\ShrekApiClient\Support\HttpRequester;
+use Guzzle\Http\Client;
 
 /**
  * Class GuzzleAdapter
@@ -10,7 +11,7 @@ use Cobwebinfo\ShrekApiClient\Support\HttpRequester;
 class GuzzleAdapter implements HttpRequester
 {
     /**
-     * @var \GuzzleHttp\Client
+     * @var Client
      */
     protected $client;
 
@@ -20,9 +21,9 @@ class GuzzleAdapter implements HttpRequester
      */
     public function __construct(array $options)
     {
-        $options['exceptions'] = false;
+        $options['exceptions'] = false;git add 
 
-        $this->client = new \GuzzleHttp\Client($options);
+        $this->client = new Client($options);
     }
 
     /**
