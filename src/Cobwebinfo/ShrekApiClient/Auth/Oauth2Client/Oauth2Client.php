@@ -1,11 +1,4 @@
-<?php
-/**
- * @package OAuth2 Client
- * @author  advanced STORE GmbH
- * Date:    03.04.14
- */
-
-namespace Cobwebinfo\ShrekApiClient\Auth\Oauth2Client;
+<?php namespace Cobwebinfo\ShrekApiClient\Auth\Oauth2Client;
 
 use Cobwebinfo\ShrekApiClient\Auth\Oauth2Client\Exceptions\BasicException;
 use Cobwebinfo\ShrekApiClient\Auth\Oauth2Client\Exceptions\InvalidArgumentException;
@@ -239,7 +232,7 @@ class Oauth2Client {
 		$result = $this->executeRequest($token_endpoint, $parameters, self::HTTP_METHOD_POST, $http_headers, self::HTTP_FORM_CONTENT_TYPE_APPLICATION);
 
 		if( isset( $result['result'] ) && !empty( $result['result']['access_token'] ) ) {
-			return $result;
+			return $result['result'];
 		} else {
 			throw new IdentityProviderException('Error while requesting Token-Endppoint: ' . $token_endpoint, BasicException::TOKEN_ENDPOINT_ERROR, $result['result']);
 		}

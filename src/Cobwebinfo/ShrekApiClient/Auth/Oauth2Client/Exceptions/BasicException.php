@@ -1,11 +1,4 @@
-<?php
-/**
- * @package OAuth2 Client
- * @author  advanced STORE GmbH
- * Date:    03.04.14
- */
-
-namespace Cobwebinfo\ShrekApiClient\Auth\Oauth2Client\Exceptions;
+<?php namespace Cobwebinfo\ShrekApiClient\Auth\Oauth2Client\Exceptions;
 
 
 class BasicException extends \Exception {
