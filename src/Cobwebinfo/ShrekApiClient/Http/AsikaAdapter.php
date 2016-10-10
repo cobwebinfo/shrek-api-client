@@ -4,6 +4,7 @@ use Asika\Http\HttpClient;
 use Cobwebinfo\ShrekApiClient\Exception\InvalidParameterException;
 use Cobwebinfo\ShrekApiClient\Exception\MissingParameterException;
 use Cobwebinfo\ShrekApiClient\Http\Asika\GetRequestParams;
+use Cobwebinfo\ShrekApiClient\Http\Asika\QueryStringRequestParams;
 use Cobwebinfo\ShrekApiClient\Support\HttpRequester;
 
 /**
@@ -57,7 +58,15 @@ class AsikaAdapter implements HttpRequester
      */
     public function head($uri, array $options = array())
     {
-        return $this->client->head($uri, $options);
+        $params = new QueryStringRequestParams($options);
+
+        if ($params->hasQuery()) {
+            $query = $this->baseUrl . $uri . $params->getQueryString();
+        } else {
+            $query = $this->baseUrl . $uri;
+        }
+
+        return $this->client->head($query, $params->headers);
     }
 
     /***
@@ -67,7 +76,9 @@ class AsikaAdapter implements HttpRequester
      */
     public function put($uri, array $options = array())
     {
-        return $this->client->put($uri, $options);
+        $params = new GetRequestParams($options);
+
+        return $this->client->put($this->baseUrl . $uri, $params->query, $params->headers);
     }
 
     /**
@@ -77,7 +88,9 @@ class AsikaAdapter implements HttpRequester
      */
     public function post($uri, array $options = array())
     {
-        return $this->client->post($uri, $options);
+        $params = new GetRequestParams($options);
+
+        return $this->client->post($this->baseUrl . $uri, $params->query, $params->headers);
     }
 
     /**
@@ -87,7 +100,9 @@ class AsikaAdapter implements HttpRequester
      */
     public function patch($uri, array $options = array())
     {
-        return $this->client->patch($uri, $options);
+        $params = new GetRequestParams($options);
+
+        return $this->client->patch($this->baseUrl . $uri, $params->query, $params->headers);
     }
 
     /**
@@ -97,6 +112,8 @@ class AsikaAdapter implements HttpRequester
      */
     public function delete($uri, array $options = array())
     {
-        return $this->client->delete($uri, $options);
+        $params = new GetRequestParams($options);
+
+        return $this->client->delete($this->baseUrl . $uri, $params->query, $params->headers);
     }
 }
