@@ -1,11 +1,8 @@
 <?php namespace Cobwebinfo\ShrekApiClient\Tests;
 
-use Cobwebinfo\ShrekApiClient\Cache\MemcachedStore;
 use Cobwebinfo\ShrekApiClient\Clients\BaseClient;
-use Cobwebinfo\ShrekApiClient\DefaultApiConnector;
 use Cobwebinfo\ShrekApiClient\Http\CacheableResponse;
-use Cobwebinfo\ShrekApiClient\Http\GuzzleAdapter;
-use GuzzleHttp\Psr7\Response;
+use Asika\Http\Response;
 use Cobwebinfo\ShrekApiClient\Auth\AccessToken;
 
 class StubClient extends BaseClient {}
@@ -97,7 +94,7 @@ class BaseClientTest extends \PHPUnit_Framework_TestCase
         $mocks['stub']->shouldReceive('fetchAccessToken')
             ->andReturn('123');
 
-        $response = new Response(200, array() ,json_encode(array('test' => 123)));
+        $response = new Response(json_encode(array('test' => 123), 200));
         $cacheableResponse = new CacheableResponse($response);
 
         $mocks['store']->shouldReceive('get')
