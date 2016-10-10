@@ -1,29 +1,41 @@
 <?php namespace Cobwebinfo\ShrekApiClient\Http;
 
+use Asika\Http\HttpClient;
+use Cobwebinfo\ShrekApiClient\Exception\InvalidParameterException;
+use Cobwebinfo\ShrekApiClient\Exception\MissingParameterException;
+use Cobwebinfo\ShrekApiClient\Http\Asika\GetRequestParams;
 use Cobwebinfo\ShrekApiClient\Support\HttpRequester;
-use Guzzle\Http\Client;
 
 /**
  * Class GuzzleAdapter
  *
  * @package Cobwebinfo\ShrekApiClient\Http
  */
-class GuzzleAdapter implements HttpRequester
+class AsikaAdapter implements HttpRequester
 {
     /**
-     * @var Client
+     * @var HttpClient
      */
     protected $client;
 
     /**
-     * GuzzleAdapter constructor.
-     * @param array $options
+     * @var string
      */
-    public function __construct(array $options)
-    {
-        $options['exceptions'] = false;
+    protected $baseUrl = '';
 
-        $this->client = new Client($options);
+    /**
+     * AsikaAdapter constructor.
+     * @param HttpClient $client
+     * @param array $config
+     */
+    public function __construct(HttpClient $client, $config = array())
+    {
+        if(empty($config['base_uri'])) {
+            throw new MissingParameterException('base_uri parameter must be provided.');
+        }
+
+        $this->baseUrl = $config['base_uri'];
+        $this->client = $client;
     }
 
     /**
@@ -33,7 +45,9 @@ class GuzzleAdapter implements HttpRequester
      */
     public function get($uri, array $options = array())
     {
-        return $this->client->get($uri, $options);
+        $params = new GetRequestParams($options);
+
+        return $this->client->get($this->baseUrl . $uri, $params->query, $params->headers);
     }
 
     /**

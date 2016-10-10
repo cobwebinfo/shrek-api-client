@@ -1,8 +1,8 @@
 <?php namespace Cobwebinfo\ShrekApiClient\Tests;
 
-use Cobwebinfo\ShrekApiClient\Cache\KeyGenerator;
+use Asika\Http\Stream\Stream;
 use Cobwebinfo\ShrekApiClient\Http\CacheableResponse;
-use GuzzleHttp\Psr7\Response;
+use Asika\Http\Response;
 
 class CacheableResponseTest extends \PHPUnit_Framework_TestCase
 {
@@ -85,7 +85,11 @@ class CacheableResponseTest extends \PHPUnit_Framework_TestCase
      */
     public function getPsr7Response($code = '200')
     {
-        $psrResponse = new Response($code, $this->getResponseHeaders(), \GuzzleHttp\json_encode($this->getBody()));
+        $stream = new Stream('php://memory', 'wb+');
+
+        $stream->write(\json_encode($this->getBody()));
+
+        $psrResponse = new Response($stream, $code, $this->getResponseHeaders());
 
         return $psrResponse;
     }

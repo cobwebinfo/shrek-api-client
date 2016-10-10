@@ -4,7 +4,7 @@ use Cobwebinfo\ShrekApiClient\Cache\ApcStore;
 use Cobwebinfo\ShrekApiClient\Cache\MemcachedStore;
 use Cobwebinfo\ShrekApiClient\Cache\NullStore;
 use Cobwebinfo\ShrekApiClient\Factory\ApcStoreFactory;
-use Cobwebinfo\ShrekApiClient\Http\GuzzleAdapter;
+use Cobwebinfo\ShrekApiClient\Http\AsikaAdapater;
 use Cobwebinfo\ShrekApiClient\ShrekServiceProvider;
 use Cobwebinfo\ShrekApiClient\Support\ConfigurableMaker;
 use Cobwebinfo\ShrekApiClient\Support\HttpRequester;
@@ -28,7 +28,7 @@ class ShrekServiceProviderTest extends \PHPUnit_Framework_TestCase
             'client_secret'=> 'YOUR_SECRET',
             'cache_driver'=> 'none',
             'auth_uri' => "http://shrek-api.cobwebinfo.com/v1/oauth/access_token",
-            'http_client' => 'guzzle',
+            'http_client' => 'asika',
             'http_client_opts'=> array(
                 'base_uri' => "http://shrek-api.cobwebinfo.com/v1/"
             ),
@@ -51,7 +51,7 @@ class ShrekServiceProviderTest extends \PHPUnit_Framework_TestCase
             'client_secret'=> 'YOUR_SECRET',
             'cache_driver'=>'none',
             'auth_uri' => "http://shrek-api.cobwebinfo.com/v1/oauth/access_token",
-            'http_client' => 'guzzle',
+            'http_client' => 'asika',
             'http_client_opts'=> array(
                 'base_uri' => "http://sources_api.local/v2/"
             ),
@@ -114,7 +114,7 @@ class ShrekServiceProviderTest extends \PHPUnit_Framework_TestCase
     {
         $instance = $this->getMockInstance(array());
 
-        $this->assertInstanceOf('Cobwebinfo\ShrekApiClient\Http\GuzzleAdapter', $instance->getConnector()->httpClient());
+        $this->assertInstanceOf('Cobwebinfo\ShrekApiClient\Http\AsikaAdapter', $instance->getConnector()->httpClient());
     }
 
     public function test_custom_http_client()

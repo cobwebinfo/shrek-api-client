@@ -17,7 +17,6 @@
         "symfony/yaml": "2.0.*",
         "mockery/mockery": "^0.9.5",
         "psr/http-message": "~1.0",
-        "guzzle/guzzle": "^3.9",
         "asika/http": "~1.0"
     },
     "require-dev": {},

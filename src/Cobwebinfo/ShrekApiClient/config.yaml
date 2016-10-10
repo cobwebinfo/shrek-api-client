@@ -2,6 +2,6 @@ cache_driver: none
 client_id: YOUR_ID
 client_secret: YOUR_SECRET
 auth_uri: "http://shrek-api.cobwebinfo.com/v1/oauth/access_token"
-http_client: guzzle
+http_client: asika
 http_client_opts:
   base_uri: "http://shrek-api.cobwebinfo.com/v1/"

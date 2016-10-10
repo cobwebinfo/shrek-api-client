@@ -1,8 +1,7 @@
 <?php namespace Cobwebinfo\ShrekApiClient\Tests;
 
-use Cobwebinfo\ShrekApiClient\Clients\KeywordClient;
 use Cobwebinfo\ShrekApiClient\Http\CacheableResponse;
-use GuzzleHttp\Psr7\Response;
+use Asika\Http\Response;
 use League\OAuth2\Client\Token\AccessToken;
 
 class KeywordClientTest extends \PHPUnit_Framework_TestCase

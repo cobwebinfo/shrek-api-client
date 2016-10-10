@@ -1,9 +1,11 @@
 <?php namespace Cobwebinfo\ShrekApiClient\Tests;
 
+use Asika\Http\HttpClient;
 use Cobwebinfo\ShrekApiClient\Clients\BaseClient;
 use Cobwebinfo\ShrekApiClient\Http\CacheableResponse;
 use Asika\Http\Response;
 use Cobwebinfo\ShrekApiClient\Auth\AccessToken;
+use Guzzle\Http\Client;
 
 class StubClient extends BaseClient {}
 
@@ -210,7 +212,10 @@ class BaseClientTest extends \PHPUnit_Framework_TestCase
      */
     protected function getMockClient()
     {
-        $client = \Mockery::mock('Cobwebinfo\ShrekApiClient\Http\GuzzleAdapter' . '[get]', array(array()));
+        $client = \Mockery::mock('Cobwebinfo\ShrekApiClient\Http\AsikaAdapter' . '[get]', array(
+            new HttpClient(),
+            array('base_uri' => 'test')
+        ));
 
         return $client;
     }

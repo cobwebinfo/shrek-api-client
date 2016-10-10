@@ -1,10 +1,7 @@
 <?php namespace Cobwebinfo\ShrekApiClient;
 
 use Cobwebinfo\ShrekApiClient\Cache\Contracts\Store;
-use Cobwebinfo\ShrekApiClient\Factory\ApcStoreFactory;
-use Cobwebinfo\ShrekApiClient\Factory\GuzzleAdapterFactory;
 use Cobwebinfo\ShrekApiClient\Factory\MemcacheStoreFactory;
-use Cobwebinfo\ShrekApiClient\Factory\NullStoreFactory;
 use Cobwebinfo\ShrekApiClient\Exception\MethodNotFoundException;
 use Cobwebinfo\ShrekApiClient\Support\ConfigurableMaker;
 use Cobwebinfo\ShrekApiClient\Support\HttpRequester;
@@ -50,7 +47,7 @@ class ShrekServiceProvider
      * @var array
      */
     protected $nativeClients = array(
-        'guzzle' => 'Cobwebinfo\ShrekApiClient\Factory\GuzzleAdapterFactory',
+        'asika' => 'Cobwebinfo\ShrekApiClient\Factory\AsikaAdapterFactory',
     );
 
     /**
