@@ -74,7 +74,7 @@ class GuzzleAdapterTest extends \PHPUnit_Framework_TestCase
         $test = new AsikaAdapterFactory();
 
         $test = $test->make(array(
-            'base_uri' => 'https://jsonplaceholder.typicode.com/'
+            'base_uri' => 'http://jsonplaceholder.typicode.com/'
         ));
 
         $result = $test->get('posts/1', array());
@@ -142,7 +142,7 @@ class GuzzleAdapterTest extends \PHPUnit_Framework_TestCase
         $test = new AsikaAdapterFactory();
 
         $test = $test->make(array(
-            'base_uri' => 'https://jsonplaceholder.typicode.com/'
+            'base_uri' => 'http://jsonplaceholder.typicode.com/'
         ));
 
         $result = $test->head('posts/1', array());
@@ -210,7 +210,7 @@ class GuzzleAdapterTest extends \PHPUnit_Framework_TestCase
         $test = new AsikaAdapterFactory();
 
         $test = $test->make(array(
-            'base_uri' => 'https://jsonplaceholder.typicode.com/'
+            'base_uri' => 'http://jsonplaceholder.typicode.com/'
         ));
 
         $result = $test->put('posts/1', array());
@@ -278,7 +278,7 @@ class GuzzleAdapterTest extends \PHPUnit_Framework_TestCase
         $test = new AsikaAdapterFactory();
 
         $test = $test->make(array(
-            'base_uri' => 'https://jsonplaceholder.typicode.com/'
+            'base_uri' => 'http://jsonplaceholder.typicode.com/'
         ));
 
         $result = $test->post('posts/1', array());
@@ -346,7 +346,7 @@ class GuzzleAdapterTest extends \PHPUnit_Framework_TestCase
         $test = new AsikaAdapterFactory();
 
         $test = $test->make(array(
-            'base_uri' => 'https://jsonplaceholder.typicode.com/'
+            'base_uri' => 'http://jsonplaceholder.typicode.com/'
         ));
 
         $result = $test->patch('posts/1', array());
@@ -416,7 +416,7 @@ class GuzzleAdapterTest extends \PHPUnit_Framework_TestCase
         $test = new AsikaAdapterFactory();
 
         $test = $test->make(array(
-            'base_uri' => 'https://jsonplaceholder.typicode.com/'
+            'base_uri' => 'http://jsonplaceholder.typicode.com/'
         ));
 
         $result = $test->delete('posts/1', array());
