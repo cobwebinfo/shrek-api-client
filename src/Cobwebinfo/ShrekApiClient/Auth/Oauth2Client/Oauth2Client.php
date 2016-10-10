@@ -9,6 +9,7 @@ namespace Cobwebinfo\ShrekApiClient\Auth\Oauth2Client;
 
 use Cobwebinfo\ShrekApiClient\Auth\Oauth2Client\Exceptions\BasicException;
 use Cobwebinfo\ShrekApiClient\Auth\Oauth2Client\Exceptions\InvalidArgumentException;
+use Cobwebinfo\ShrekApiClient\Exception\IdentityProviderException;
 
 class Oauth2Client {
 
@@ -122,32 +123,11 @@ class Oauth2Client {
 	protected $curl_options = array();
 
 	/**
-	 * Token Endpoint
-	 *
-	 * @var string
-	 */
-	protected $token_endpoint = "";
-
-	/**
 	 * Refresh-Token
 	 *
 	 * @var string
 	 */
 	protected $refresh_token = "";
-
-	/**
-	 * Session-Name
-	 *
-	 * @var string
-	 */
-	protected $sessionName = 'accessinfo';
-
-	/**
-	 * Information about connections/results
-	 *
-	 * @var string
-	 */
-	protected $info = "";
 
 	/**
 	 * Constructor
@@ -160,10 +140,6 @@ class Oauth2Client {
 	 * @throws Exceptions\InvalidArgumentException
 	 */
 	public function __construct($client_id = null, $client_secret = null, $client_auth = self::AUTH_TYPE_URI, $certificate_file = null) {
-
-		if( !isset($_SESSION) )
-			session_start();
-
 		if (!extension_loaded('curl')) {
 			throw new BasicException('The PHP extension curl must be installed to use this library.', BasicException::CURL_NOT_FOUND);
 		}
@@ -174,13 +150,8 @@ class Oauth2Client {
 		$this->certificate_file = $certificate_file;
 
 		if (!empty($this->certificate_file)  && !is_file($this->certificate_file)) {
-
 			throw new InvalidArgumentException('The certificate file was not found', InvalidArgumentException::CERTIFICATE_NOT_FOUND);
-
 		}
-
-		$this->loadDataBySession();
-
 	}
 
 	/**
@@ -222,37 +193,32 @@ class Oauth2Client {
 		return $auth_endpoint . '?' . http_build_query($parameters, null, '&');
 	}
 
-	/**
-	 * fetchAccessToken
-	 *
-	 * @param string $token_endpoint    Url of the token endpoint
-	 * @param int    $grant_type        Grant Type ('authorization_code', 'password', 'client_credentials', 'refresh_token', or a custom code (@see GrantType Classes)
-	 * @param array  $parameters        Array sent to the server (depend on which grant type you're using)
-	 * @throws Exceptions\BasicException
-	 * @throws Exceptions\InvalidArgumentException
-	 * @return array Array of parameters required by the grant_type (CF SPEC)
-	 */
+    /**
+     * @param $token_endpoint
+     * @param $grant_type
+     * @param array $parameters
+     * @return array
+     * @throws BasicException
+     * @throws IdentityProviderException
+     */
 	public function fetchAccessToken($token_endpoint, $grant_type, array $parameters) {
-
-		if( $this->hasValidAccessToken() ) {
-
-			return $this->access_token;
-
-		}
-
 		if (!$grant_type) {
 			throw new InvalidArgumentException('The grant_type is mandatory.', InvalidArgumentException::INVALID_GRANT_TYPE);
 		}
+
 		$grantTypeClassName = $this->convertToCamelCase($grant_type);
 		$grantTypeClass =  __NAMESPACE__ . '\\GrantType\\' . $grantTypeClassName;
+
 		if (!class_exists($grantTypeClass)) {
 			throw new InvalidArgumentException('Unknown grant type \'' . $grant_type . '\'', InvalidArgumentException::INVALID_GRANT_TYPE);
 		}
+
 		$grantTypeObject = new $grantTypeClass();
 		$grantTypeObject->validateParameters($parameters);
 		if (!defined($grantTypeClass . '::GRANT_TYPE')) {
 			throw new BasicException('Unknown constant GRANT_TYPE for class ' . $grantTypeClassName, BasicException::GRANT_TYPE_ERROR);
 		}
+
 		$parameters['grant_type'] = $grantTypeClass::GRANT_TYPE;
 		$http_headers = array();
 		switch ($this->client_auth) {
@@ -270,23 +236,13 @@ class Oauth2Client {
 				break;
 		}
 
-		$this->token_endpoint = $_SESSION['tokend'] = $token_endpoint;
-
 		$result = $this->executeRequest($token_endpoint, $parameters, self::HTTP_METHOD_POST, $http_headers, self::HTTP_FORM_CONTENT_TYPE_APPLICATION);
 
-		$this->info = $result;
-
 		if( isset( $result['result'] ) && !empty( $result['result']['access_token'] ) ) {
-
-			$this->saveAccessInformation( $result['result'] );
-
+			return $result;
 		} else {
-
-			throw new BasicException('Error while requesting Token-Endppoint: ' . $token_endpoint, BasicException::TOKEN_ENDPOINT_ERROR);
-
+			throw new IdentityProviderException('Error while requesting Token-Endppoint: ' . $token_endpoint, BasicException::TOKEN_ENDPOINT_ERROR, $result['result']);
 		}
-
-		return $result;
 	}
 
 	/**
@@ -352,96 +308,6 @@ class Oauth2Client {
 		$this->access_token_secret = $secret;
 		$this->access_token_algorithm = $algorithm;
 
-	}
-
-	/**
-	 * Fetch a protected resource
-	 *
-	 * @param        $protected_resource_url
-	 * @param array  $parameters
-	 * @param string $http_method
-	 * @param array  $http_headers
-	 * @param int    $form_content_type
-	 *
-	 * @return array
-	 * @throws Exceptions\BasicException
-	 * @throws Exceptions\InvalidArgumentException
-	 */
-	public function fetch($protected_resource_url, $parameters = array(), $http_method = self::HTTP_METHOD_GET, array $http_headers = array(), $form_content_type = self::HTTP_FORM_CONTENT_TYPE_MULTIPART) {
-
-		if( ( $this->access_token = $this->getAccessToken() ) === null ) {
-
-			return null;
-
-		}
-
-		if ($this->access_token) {
-
-			switch ($this->access_token_type) {
-				case self::ACCESS_TOKEN_URI:
-					if (is_array($parameters)) {
-						$parameters[$this->access_token_param_name] = $this->access_token;
-					} else {
-						throw new InvalidArgumentException(
-							'You need to give parameters as array if you want to give the token within the URI.',
-							InvalidArgumentException::REQUIRE_PARAMS_AS_ARRAY
-						);
-					}
-					break;
-				case self::ACCESS_TOKEN_BEARER:
-					$http_headers['Authorization'] = 'Bearer ' . $this->access_token;
-					break;
-				case self::ACCESS_TOKEN_OAUTH:
-					$http_headers['Authorization'] = 'OAuth ' . $this->access_token;
-					break;
-				case self::ACCESS_TOKEN_MAC:
-					$http_headers['Authorization'] = 'MAC ' . $this->generateMACSignature($protected_resource_url, $parameters, $http_method);
-					break;
-				default:
-					throw new BasicException('Unknown access token type.', BasicException::INVALID_ACCESS_TOKEN_TYPE);
-					break;
-			}
-
-		}
-
-		return $this->executeRequest($protected_resource_url, $parameters, $http_method, $http_headers, $form_content_type);
-	}
-
-	/**
-	 * Generate the MAC signature
-	 *
-	 * @param string $url Called URL
-	 * @param array  $parameters Parameters
-	 * @param string $http_method Http Method
-	 * @return string
-	 */
-	private function generateMACSignature($url, $parameters, $http_method) {
-
-		$timestamp = time();
-		$nonce = uniqid();
-		$parsed_url = parse_url($url);
-		if (!isset($parsed_url['port']))
-		{
-			$parsed_url['port'] = ($parsed_url['scheme'] == 'https') ? 443 : 80;
-		}
-		if ($http_method == self::HTTP_METHOD_GET) {
-			if (is_array($parameters)) {
-				$parsed_url['path'] .= '?' . http_build_query($parameters, null, '&');
-			} elseif ($parameters) {
-				$parsed_url['path'] .= '?' . $parameters;
-			}
-		}
-
-		$signature = base64_encode(hash_hmac($this->access_token_algorithm,
-			$timestamp . "\n"
-			. $nonce . "\n"
-			. $http_method . "\n"
-			. $parsed_url['path'] . "\n"
-			. $parsed_url['host'] . "\n"
-			. $parsed_url['port'] . "\n\n"
-			, $this->access_token_secret, true));
-
-		return 'id="' . $this->access_token . '", ts="' . $timestamp . '", nonce="' . $nonce . '", mac="' . $signature . '"';
 	}
 
 	/**
@@ -568,140 +434,10 @@ class Oauth2Client {
 
 	}
 
-	public function hasValidAccessToken() {
-
-		if( ( $information = $this->hasAccessInformation() ) !== false ) {
-
-			if( $information['expires_in'] > 0 ) {
-
-				return $information['access_token'];
-
-			}
-
-		}
-
-		return false;
-	}
-
-	public function getAccessToken( $refreshToken = true ) {
-
-		if( $this->hasValidAccessToken() ) {
-
-			return $this->access_token;
-
-		}
-
-		if( $refreshToken === true && $this->getRefreshToken() !== null && $this->getTokenEndpoint() !== null ) {
-
-			try {
-
-				$this->fetchAccessToken( $this->getTokenEndpoint(), 'refresh_token', array(
-
-					'refresh_token'	=> $this->getRefreshToken()
-
-				));
-
-				return $this->access_token;
-
-			} catch(BasicException $exc) {
-
-				$this->clear();
-
-				return null;
-
-			}
-
-		}
-
-		$this->clear();
-
-		return null;
-
-	}
-
-	public function setTokenEndpoint( $tokenEndpoint ) {
-
-		$this->token_endpoint = $_SESSION['tokend'] = $tokenEndpoint;
-
-	}
-
-	public function getTokenEndpoint() {
-
-		return $this->token_endpoint;
-
-	}
-
+    /**
+     * @return null|string
+     */
 	protected function getRefreshToken() {
-
 		return ( $this->refresh_token !== null ) ? $this->refresh_token : null;
-
 	}
-
-	protected function hasAccessInformation() {
-
-		return ( isset( $_SESSION[$this->sessionName] ) ) ? $_SESSION[$this->sessionName] : false;
-
-	}
-
-	protected function saveAccessInformation( $data ) {
-
-		$refreshToken = ( !empty( $_SESSION[$this->sessionName]['refresh_token'] ) ) ? $_SESSION[$this->sessionName]['refresh_token'] : null;
-
-		$_SESSION[$this->sessionName] = $data;
-
-		if( $refreshToken !== null )
-			$_SESSION[$this->sessionName]['refresh_token'] = $refreshToken;
-
-		$this->loadDataBySession();
-
-	}
-
-	protected function loadDataBySession() {
-
-		if( ( $data = $this->hasAccessInformation() ) !== false ) {
-
-			if( $this->hasValidAccessToken() ) {
-
-				$this->access_token = $data['access_token'];
-
-			}
-
-			if( !empty( $data['refresh_token'] ) ) {
-
-				$this->refresh_token = $data['refresh_token'];
-
-			}
-
-			$this->token_endpoint = ( !empty( $_SESSION['tokend'] ) ) ? $_SESSION['tokend'] : null;
-
-		}
-
-	}
-
-	public function flush() {
-
-		$this->clear();
-
-	}
-
-	protected function clear() {
-
-		$this->access_token = null;
-
-		$this->refresh_token = null;
-
-		$this->token_endpoint = null;
-
-		unset( $_SESSION[$this->sessionName] );
-
-		unset( $_SESSION['tokend'] );
-
-	}
-
-	public function getInfo() {
-
-		return $this->info;
-
-	}
-
 }
