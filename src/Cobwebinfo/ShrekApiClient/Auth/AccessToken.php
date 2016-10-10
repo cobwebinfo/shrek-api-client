@@ -1,5 +1,7 @@
 <?php namespace Cobwebinfo\ShrekApiClient\Auth;
 
+use Cobwebinfo\ShrekApiClient\Exception\InvalidParameterException;
+
 /**
  * Represents an access token.
  *
@@ -32,12 +34,12 @@ class AccessToken
      *
      * @param array $options An array of options returned by the service provider
      *     in the access token request. The `access_token` option is required.
-     * @throws InvalidArgumentException if `access_token` is not provided in `$options`.
+     * @throws InvalidParameterException if `access_token` is not provided in `$options`.
      */
     public function __construct(array $options = array())
     {
         if (empty($options['access_token'])) {
-            throw new InvalidArgumentException('Required option not passed: "access_token"');
+            throw new InvalidParameterException('Required option not passed: "access_token"');
         }
         $this->accessToken = $options['access_token'];
         if (!empty($options['resource_owner_id'])) {
@@ -124,13 +126,13 @@ class AccessToken
      * Checks if this token has expired.
      *
      * @return boolean true if the token has expired, false otherwise.
-     * @throws RuntimeException if 'expires' is not set on the token.
+     * @throws \RuntimeException if 'expires' is not set on the token.
      */
     public function hasExpired()
     {
         $expires = $this->getExpires();
         if (empty($expires)) {
-            throw new RuntimeException('"expires" is not set on the token');
+            throw new \RuntimeException('"expires" is not set on the token');
         }
         return $expires < time();
     }
