@@ -2,6 +2,7 @@
 
 use Cobwebinfo\ShrekApiClient\Cache\Contracts\Store;
 use Cobwebinfo\ShrekApiClient\Factory\ApcStoreFactory;
+use Cobwebinfo\ShrekApiClient\Factory\AsikaAdapterFactory;
 use Cobwebinfo\ShrekApiClient\Factory\GuzzleAdapterFactory;
 use Cobwebinfo\ShrekApiClient\Factory\MemcacheStoreFactory;
 use Cobwebinfo\ShrekApiClient\Factory\NullStoreFactory;
@@ -51,6 +52,7 @@ class ShrekServiceProvider
      */
     protected $nativeClients = [
         'guzzle' => GuzzleAdapterFactory::class,
+        'asika' => AsikaAdapterFactory::class
     ];
 
     /**

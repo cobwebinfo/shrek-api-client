@@ -5,6 +5,7 @@ use Cobwebinfo\ShrekApiClient\Clients\BaseClient;
 use Cobwebinfo\ShrekApiClient\DefaultApiConnector;
 use Cobwebinfo\ShrekApiClient\Http\CacheableResponse;
 use Cobwebinfo\ShrekApiClient\Http\GuzzleAdapter;
+use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use League\OAuth2\Client\Token\AccessToken;
 
@@ -213,7 +214,7 @@ class BaseClientTest extends \PHPUnit_Framework_TestCase
      */
     protected function getMockClient()
     {
-        $client = \Mockery::mock(GuzzleAdapter::class . '[get]', [[]]);
+        $client = \Mockery::mock(GuzzleAdapter::class . '[get]', new Client());
 
         return $client;
     }

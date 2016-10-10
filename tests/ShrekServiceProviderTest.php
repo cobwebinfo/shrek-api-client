@@ -1,7 +1,6 @@
 <?php namespace Cobwebinfo\ShrekApiClient\Tests;
 
 use Cobwebinfo\ShrekApiClient\Cache\ApcStore;
-use Cobwebinfo\ShrekApiClient\Cache\MemcachedStore;
 use Cobwebinfo\ShrekApiClient\Cache\NullStore;
 use Cobwebinfo\ShrekApiClient\Factory\ApcStoreFactory;
 use Cobwebinfo\ShrekApiClient\Http\GuzzleAdapter;
@@ -30,7 +29,8 @@ class ShrekServiceProviderTest extends \PHPUnit_Framework_TestCase
             'auth_uri' => "http://shrek-api.cobwebinfo.com/v1/oauth/access_token",
             'http_client' => 'guzzle',
             'http_client_opts'=> [
-                'base_uri' => "http://shrek-api.cobwebinfo.com/v1/"
+                'base_uri' => "http://shrek-api.cobwebinfo.com/v1/",
+                'exceptions' => false
             ],
         ], $config);
     }

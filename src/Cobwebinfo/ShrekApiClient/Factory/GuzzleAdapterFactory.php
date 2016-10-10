@@ -15,6 +15,8 @@ class GuzzleAdapterFactory implements ConfigurableMaker
      */
     public function make(array $config)
     {
-        return new GuzzleAdapter($config);
+        $client = new \GuzzleHttp\Client($config);
+
+        return new GuzzleAdapter($client);
     }
 }

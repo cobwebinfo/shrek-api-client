@@ -5,3 +5,4 @@ auth_uri: "http://shrek-api.cobwebinfo.com/v1/oauth/access_token"
 http_client: guzzle
 http_client_opts:
   base_uri: "http://shrek-api.cobwebinfo.com/v1/"
+  exceptions: false
