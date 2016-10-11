@@ -6,14 +6,15 @@ This library can be used to pull data from the various public endpoints provided
 
 | Client Version | PHP Version |
 | -------------- | ----------- |
-| 0.*            | >= 5.3      |
+| 1.0.*          | 5.3 - 5.4   |
+| 1.2.*          | 5.5+        |
  
 ## Installation
 
 The suggested installation method is via [composer](https://getcomposer.org/):
 
 ```sh
-php composer.phar require "cobwebinfo/shrek-api-client:1.0.*"
+php composer.phar require "cobwebinfo/shrek-api-client:1.2.*"
 ```
 
 ## Usage
@@ -26,10 +27,6 @@ $instance = $instantiator->instantiate();
 
 ## Todo
 
-- More cache handlers (redis & APC)
 - Clear/bypass cache?
-- Unit tests
-- Integration tests.
-- Release version 1.0
 - Packagist
 
