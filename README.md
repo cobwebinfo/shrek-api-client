@@ -134,8 +134,7 @@ The package provides a Yaml reader sħould you want to store your client id, cli
 config in a yaml file. It works as follows:
 
 ```php
-Yaml::parse(file_get_contents(__DIR__ . '/config.yaml'));
-]);
+Yaml::parse(file_get_contents(__DIR__ . '/config.yaml'));;
 ```
 
 The above would return an associative array, which you could then pass into the ShrekServiceProvider.
