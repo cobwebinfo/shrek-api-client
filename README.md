@@ -17,13 +17,104 @@ The suggested installation method is via [composer](https://getcomposer.org/):
 php composer.phar require "cobwebinfo/shrek-api-client:1.2.*"
 ```
 
-## Usage
-To do
-```php
-$instantiator = new ();
+## Requesting access to the API.
 
-$instance = $instantiator->instantiate();
+Please contact Cobwebinfo at @ enquiries@cobwebinfo.com to access an API key.
+
+## Usage
+The ShrekServiceProvider class provides a neat wrapper for instantiating the 
+various clients needed to access the API. You can manually instantiate the clients
+if you do not wish to use it, however.
+
+You can get an instance as follows:
+
+```php
+$provider = new \Cobwebinfo\ShrekApiClient\ShrekServiceProvider([
+                'client_id' => 1,
+                'client_secret'=>'be7ac9d3752e70953c5716fa31478800'
+]);
 ```
+
+The array passed to the provider is used for configuration. To see the available options, refer
+to the [Config.yaml file](src/Cobwebinfo/ShrekApiClient/config.yaml).
+
+**Once you have a provider instance, you can access the various clients as follows:**
+
+```php
+$keywordClient = $provider->getKeywordClient();
+```
+
+You can then access data from the API as follows:
+
+```php
+  try {
+        $response = $keywordClient->paginate(1, 4, []);
+    } catch(IdentityProviderException $e) {
+        var_dump('Authentication error: ' . $e->getMessage());
+    }
+
+    if($response->wasSuccessful()) {
+        foreach($response->body['data']['items'] as $key => $keyword) {
+            echo "<h3> $key </h3>";
+
+            var_dump($keyword);
+        }
+    }
+
+```
+
+#### Caching
+**Please note:** By default the app uses the 'NullStore' cache class. This is an implementation of
+the null object pattern, and as you may have guessed does not cache anything. If you intend to use
+this method, you will need to implement your own caching to avoid hitting API limits. Alternatively,
+if your application supports APC or memcache, you can use one of the inbuilt classes to handle
+caching automatically. To do so, use the config below:
+
+```php
+$provider = new \Cobwebinfo\ShrekApiClient\ShrekServiceProvider([
+                'client_id' => 1,
+                'client_secret'=>'be7ac9d3752e70953c5716fa31478800',
+                'cache_driver' => 'memcache' OR 'apc'
+]);
+```
+
+If you wish to roll your own cache implementation then create a new class which uses the 'Cobwebinfo\ShrekApiClient\Cache\Contracts\Store'
+interface and pass the fully qualified name into the Provider, as follows:
+
+```php
+$provider = new \Cobwebinfo\ShrekApiClient\ShrekServiceProvider([
+                'client_id' => 1,
+                'client_secret'=>'be7ac9d3752e70953c5716fa31478800',
+                'cache_driver' => '\Your\Namespace\ClassName'
+]);
+```
+
+#### Http Clients
+By default Guzzle is used as the HTTP client. If you prefer not to use guzzle, then an alternative
+implementation is provided. To use this, provide the following config:
+
+```php
+$provider = new \Cobwebinfo\ShrekApiClient\ShrekServiceProvider([
+                'client_id' => 1,
+                'client_secret'=>'be7ac9d3752e70953c5716fa31478800',
+                'http_client' => 'asika'
+]);
+```
+
+As with caching, you can also roll your own HTTP client should you so choose. Simply create a new 
+class implementing the 'Cobwebinfo\ShrekApiClient\Support\HttpRequester' interface and pass in
+the full qualified name, as follows:
+
+**Please note:** The class should return a '\Psr\Http\Message\ResponseInterface' instance.
+
+```php
+$provider = new \Cobwebinfo\ShrekApiClient\ShrekServiceProvider([
+                'client_id' => 1,
+                'client_secret'=>'be7ac9d3752e70953c5716fa31478800',
+                'http_client' => '\Your\Namespace\ClassName'
+]);
+```
+
 
 ## Todo
 
