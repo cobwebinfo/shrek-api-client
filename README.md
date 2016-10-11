@@ -30,8 +30,8 @@ You can get an instance as follows:
 
 ```php
 $provider = new \Cobwebinfo\ShrekApiClient\ShrekServiceProvider([
-                'client_id' => 1,
-                'client_secret'=>'be7ac9d3752e70953c5716fa31478800'
+                'client_id' => YOUR ID,
+                'client_secret'=> YOUR SECRET
 ]);
 ```
 
@@ -41,8 +41,8 @@ you could do the following:
 ```php
 $this->app->singleton(\Cobwebinfo\ShrekApiClient\ShrekServiceProvider::class, function() {
             return new \Cobwebinfo\ShrekApiClient\ShrekServiceProvider([
-                'client_id' => 1,
-                'client_secret'=>'be7ac9d3752e70953c5716fa31478800'
+                'client_id' => YOUR ID,
+                'client_secret'=> YOUR SECRET
             ]);
         });
 
@@ -85,8 +85,8 @@ caching automatically. To do so, use the config below:
 
 ```php
 $provider = new \Cobwebinfo\ShrekApiClient\ShrekServiceProvider([
-                'client_id' => 1,
-                'client_secret'=>'be7ac9d3752e70953c5716fa31478800',
+                'client_id' => YOUR ID,
+                'client_secret'=> YOUR SECRET,
                 'cache_driver' => 'memcache' OR 'apc'
 ]);
 ```
@@ -96,8 +96,8 @@ interface and pass the fully qualified name into the Provider, as follows:
 
 ```php
 $provider = new \Cobwebinfo\ShrekApiClient\ShrekServiceProvider([
-                'client_id' => 1,
-                'client_secret'=>'be7ac9d3752e70953c5716fa31478800',
+                'client_id' => YOUR ID,
+                'client_secret'=> YOUR SECRET,
                 'cache_driver' => '\Your\Namespace\ClassName'
 ]);
 ```
@@ -108,8 +108,8 @@ implementation is provided. To use this, provide the following config:
 
 ```php
 $provider = new \Cobwebinfo\ShrekApiClient\ShrekServiceProvider([
-                'client_id' => 1,
-                'client_secret'=>'be7ac9d3752e70953c5716fa31478800',
+                'client_id' => YOUR ID,
+                'client_secret'=> YOUR SECRET,
                 'http_client' => 'asika'
 ]);
 ```
@@ -122,8 +122,8 @@ the full qualified name, as follows:
 
 ```php
 $provider = new \Cobwebinfo\ShrekApiClient\ShrekServiceProvider([
-                'client_id' => 1,
-                'client_secret'=>'be7ac9d3752e70953c5716fa31478800',
+                'client_id' => YOUR ID,
+                'client_secret'=> YOUR SECRET,
                 'http_client' => '\Your\Namespace\ClassName'
 ]);
 ```
