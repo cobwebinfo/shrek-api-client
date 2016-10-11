@@ -14,7 +14,7 @@
     ],
     "require": {
         "php": ">=5.3,<8.0-DEV",
-        "symfony/yaml": "2.0.*",
+        "symfony/yaml": "~2.4",
         "mockery/mockery": "0.9.*",
         "psr/http-message": "~1.0",
         "asika/http": "~1.0"
