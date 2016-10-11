@@ -35,6 +35,19 @@ $provider = new \Cobwebinfo\ShrekApiClient\ShrekServiceProvider([
 ]);
 ```
 
+I would suggest adding this as a singleton to your service container. If you use Laravel for example,
+you could do the following:
+
+```php
+$this->app->singleton(\Cobwebinfo\ShrekApiClient\ShrekServiceProvider::class, function() {
+            return new \Cobwebinfo\ShrekApiClient\ShrekServiceProvider([
+                'client_id' => 1,
+                'client_secret'=>'be7ac9d3752e70953c5716fa31478800'
+            ]);
+        });
+
+```
+
 The array passed to the provider is used for configuration. To see the available options, refer
 to the [Config.yaml file](src/Cobwebinfo/ShrekApiClient/config.yaml).
 
@@ -115,6 +128,17 @@ $provider = new \Cobwebinfo\ShrekApiClient\ShrekServiceProvider([
 ]);
 ```
 
+#### Config
+
+The package provides a Yaml reader sħould you want to store your client id, client secret or other
+config in a yaml file. It works as follows:
+
+```php
+Yaml::parse(file_get_contents(__DIR__ . '/config.yaml'));
+]);
+```
+
+The above would return an associative array, which you could then pass into the ShrekServiceProvider.
 
 ## Todo
 
