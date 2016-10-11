@@ -1,6 +1,6 @@
 # S.H.R.E.K API Client
 
-[![Build Status](https://travis-ci.org/cobwebinfo/shrek-api-client/branches.svg?branch=master)](https://travis-ci.org/cobwebinfo/shrek-api-client)
+[![Build Status](https://travis-ci.org/cobwebinfo/shrek-api-client.svg?branch=master)](https://travis-ci.org/cobwebinfo/shrek-api-client)
 
 This library can be used to pull data from the various public endpoints provided by the SHREK API. The client has been created with ease of use in mind, simply provide your API ID and private key and use the instructions below to proceed.
 
