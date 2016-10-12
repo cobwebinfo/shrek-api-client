@@ -76,9 +76,9 @@ class AsikaAdapter implements HttpRequester
      */
     public function put($uri, array $options = array())
     {
-        $params = new GetRequestParams($options);
+        $params = new QueryStringRequestParams($options);
 
-        return $this->client->put($this->baseUrl . $uri, $params->query, $params->headers);
+        return $this->client->put($this->baseUrl . $uri, $params->getQueryString(), $params->headers);
     }
 
     /**
@@ -88,9 +88,9 @@ class AsikaAdapter implements HttpRequester
      */
     public function post($uri, array $options = array())
     {
-        $params = new GetRequestParams($options);
+        $params = new QueryStringRequestParams($options);
 
-        return $this->client->post($this->baseUrl . $uri, $params->query, $params->headers);
+        return $this->client->post($this->baseUrl . $uri, $params->getQueryString(), $params->headers);
     }
 
     /**
@@ -100,9 +100,9 @@ class AsikaAdapter implements HttpRequester
      */
     public function patch($uri, array $options = array())
     {
-        $params = new GetRequestParams($options);
+        $params = new QueryStringRequestParams($options);
 
-        return $this->client->patch($this->baseUrl . $uri, $params->query, $params->headers);
+        return $this->client->patch($this->baseUrl . $uri, $params->getQueryString(), $params->headers);
     }
 
     /**
@@ -112,8 +112,8 @@ class AsikaAdapter implements HttpRequester
      */
     public function delete($uri, array $options = array())
     {
-        $params = new GetRequestParams($options);
+        $params = new QueryStringRequestParams($options);
 
-        return $this->client->delete($this->baseUrl . $uri, $params->query, $params->headers);
+        return $this->client->delete($this->baseUrl . $uri, $params->getQueryString(), $params->headers);
     }
 }

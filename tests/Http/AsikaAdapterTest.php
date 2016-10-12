@@ -192,7 +192,7 @@ class AsikaAdapterTest extends \PHPUnit_Framework_TestCase
 
         $mocks['http']->shouldReceive('put')
             ->once()
-            ->with('http://shrek-api.cobwebinfo.com/v1/test', array(), array())
+            ->with('http://shrek-api.cobwebinfo.com/v1/test', '', array())
             ->andReturn(true);
 
 
@@ -211,7 +211,7 @@ class AsikaAdapterTest extends \PHPUnit_Framework_TestCase
 
         $mocks['http']->shouldReceive('put')
             ->once()
-            ->with('http://shrek-api.cobwebinfo.com/v1/test', $params, array())
+            ->with('http://shrek-api.cobwebinfo.com/v1/test', http_build_query($params), array())
             ->andReturn(true);
 
         $result = $mocks['adapter']->put('test', array(
@@ -231,7 +231,7 @@ class AsikaAdapterTest extends \PHPUnit_Framework_TestCase
 
         $mocks['http']->shouldReceive('put')
             ->once()
-            ->with('http://shrek-api.cobwebinfo.com/v1/test', array(), $params)
+            ->with('http://shrek-api.cobwebinfo.com/v1/test', '', $params)
             ->andReturn(true);
 
         $result = $mocks['adapter']->put('test', array(
@@ -260,7 +260,7 @@ class AsikaAdapterTest extends \PHPUnit_Framework_TestCase
 
         $mocks['http']->shouldReceive('post')
             ->once()
-            ->with('http://shrek-api.cobwebinfo.com/v1/test', array(), array())
+            ->with('http://shrek-api.cobwebinfo.com/v1/test','', array())
             ->andReturn(true);
 
 
@@ -279,7 +279,7 @@ class AsikaAdapterTest extends \PHPUnit_Framework_TestCase
 
         $mocks['http']->shouldReceive('post')
             ->once()
-            ->with('http://shrek-api.cobwebinfo.com/v1/test', $params, array())
+            ->with('http://shrek-api.cobwebinfo.com/v1/test', http_build_query($params), array())
             ->andReturn(true);
 
         $result = $mocks['adapter']->post('test', array(
@@ -299,7 +299,7 @@ class AsikaAdapterTest extends \PHPUnit_Framework_TestCase
 
         $mocks['http']->shouldReceive('post')
             ->once()
-            ->with('http://shrek-api.cobwebinfo.com/v1/test', array(), $params)
+            ->with('http://shrek-api.cobwebinfo.com/v1/test', '', $params)
             ->andReturn(true);
 
         $result = $mocks['adapter']->post('test', array(
@@ -328,7 +328,7 @@ class AsikaAdapterTest extends \PHPUnit_Framework_TestCase
 
         $mocks['http']->shouldReceive('patch')
             ->once()
-            ->with('http://shrek-api.cobwebinfo.com/v1/test', array(), array())
+            ->with('http://shrek-api.cobwebinfo.com/v1/test', '', array())
             ->andReturn(true);
 
 
@@ -347,7 +347,7 @@ class AsikaAdapterTest extends \PHPUnit_Framework_TestCase
 
         $mocks['http']->shouldReceive('patch')
             ->once()
-            ->with('http://shrek-api.cobwebinfo.com/v1/test', $params, array())
+            ->with('http://shrek-api.cobwebinfo.com/v1/test', http_build_query($params), array())
             ->andReturn(true);
 
         $result = $mocks['adapter']->patch('test', array(
@@ -367,7 +367,7 @@ class AsikaAdapterTest extends \PHPUnit_Framework_TestCase
 
         $mocks['http']->shouldReceive('patch')
             ->once()
-            ->with('http://shrek-api.cobwebinfo.com/v1/test', array(), $params)
+            ->with('http://shrek-api.cobwebinfo.com/v1/test', '', $params)
             ->andReturn(true);
 
         $result = $mocks['adapter']->patch('test', array(
@@ -398,7 +398,7 @@ class AsikaAdapterTest extends \PHPUnit_Framework_TestCase
 
         $mocks['http']->shouldReceive('delete')
             ->once()
-            ->with('http://shrek-api.cobwebinfo.com/v1/test', array(), array())
+            ->with('http://shrek-api.cobwebinfo.com/v1/test', '', array())
             ->andReturn(true);
 
 
@@ -417,7 +417,7 @@ class AsikaAdapterTest extends \PHPUnit_Framework_TestCase
 
         $mocks['http']->shouldReceive('delete')
             ->once()
-            ->with('http://shrek-api.cobwebinfo.com/v1/test', $params, array())
+            ->with('http://shrek-api.cobwebinfo.com/v1/test', http_build_query($params), array())
             ->andReturn(true);
 
         $result = $mocks['adapter']->delete('test', array(
@@ -437,7 +437,7 @@ class AsikaAdapterTest extends \PHPUnit_Framework_TestCase
 
         $mocks['http']->shouldReceive('delete')
             ->once()
-            ->with('http://shrek-api.cobwebinfo.com/v1/test', array(), $params)
+            ->with('http://shrek-api.cobwebinfo.com/v1/test', '', $params)
             ->andReturn(true);
 
         $result = $mocks['adapter']->delete('test', array(
