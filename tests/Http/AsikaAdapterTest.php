@@ -21,7 +21,7 @@ class GuzzleAdapterTest extends \PHPUnit_Framework_TestCase
 
         $mocks['http']->shouldReceive('get')
             ->once()
-            ->with('http://shrek-api.cobwebinfo.com/v1/test', '', array())
+            ->with('http://shrek-api.cobwebinfo.com/v1/test', array(), array())
             ->andReturn(true);
 
 
@@ -40,7 +40,7 @@ class GuzzleAdapterTest extends \PHPUnit_Framework_TestCase
 
         $mocks['http']->shouldReceive('get')
             ->once()
-            ->with('http://shrek-api.cobwebinfo.com/v1/test', http_build_query($params), array())
+            ->with('http://shrek-api.cobwebinfo.com/v1/test', $params, array())
             ->andReturn(true);
 
         $result = $mocks['adapter']->get('test', array(
@@ -60,7 +60,7 @@ class GuzzleAdapterTest extends \PHPUnit_Framework_TestCase
 
         $mocks['http']->shouldReceive('get')
             ->once()
-            ->with('http://shrek-api.cobwebinfo.com/v1/test', '', $params)
+            ->with('http://shrek-api.cobwebinfo.com/v1/test', array(), $params)
             ->andReturn(true);
 
         $result = $mocks['adapter']->get('test', array(

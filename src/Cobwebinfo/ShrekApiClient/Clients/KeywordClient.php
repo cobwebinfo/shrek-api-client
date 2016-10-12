@@ -10,7 +10,7 @@ class KeywordClient extends BaseClient {
     /**
      * @var string
      */
-    protected $resource = 'keywords/';
+    protected $resource = 'keywords';
 
     /**
      * @param $id
@@ -18,7 +18,7 @@ class KeywordClient extends BaseClient {
      */
     public function one($id, $params = array())
     {
-        return $this->get($this->resource . $id, array(), $params);
+        return $this->get($this->resource .  "/" . $id, array(), $params);
     }
 
     /**
