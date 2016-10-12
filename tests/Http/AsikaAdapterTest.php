@@ -2,6 +2,7 @@
 
 use Cobwebinfo\ShrekApiClient\Factory\AsikaAdapterFactory;
 use Cobwebinfo\ShrekApiClient\Http\AsikaAdapter;
+use Cobwebinfo\ShrekApiClient\Query\KeywordQuery;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Yaml\Yaml;
 
@@ -20,7 +21,7 @@ class GuzzleAdapterTest extends \PHPUnit_Framework_TestCase
 
         $mocks['http']->shouldReceive('get')
             ->once()
-            ->with('http://shrek-api.cobwebinfo.com/v1/test', array(), array())
+            ->with('http://shrek-api.cobwebinfo.com/v1/test', '', array())
             ->andReturn(true);
 
 
@@ -39,7 +40,7 @@ class GuzzleAdapterTest extends \PHPUnit_Framework_TestCase
 
         $mocks['http']->shouldReceive('get')
             ->once()
-            ->with('http://shrek-api.cobwebinfo.com/v1/test', $params, array())
+            ->with('http://shrek-api.cobwebinfo.com/v1/test', http_build_query($params), array())
             ->andReturn(true);
 
         $result = $mocks['adapter']->get('test', array(
@@ -59,7 +60,7 @@ class GuzzleAdapterTest extends \PHPUnit_Framework_TestCase
 
         $mocks['http']->shouldReceive('get')
             ->once()
-            ->with('http://shrek-api.cobwebinfo.com/v1/test', array(), $params)
+            ->with('http://shrek-api.cobwebinfo.com/v1/test', '', $params)
             ->andReturn(true);
 
         $result = $mocks['adapter']->get('test', array(
@@ -78,6 +79,23 @@ class GuzzleAdapterTest extends \PHPUnit_Framework_TestCase
         ));
 
         $result = $test->get('posts/1', array());
+
+        $this->assertInstanceOf('Psr\Http\Message\ResponseInterface', $result);
+    }
+
+    public function test_asika_handles_white_space()
+    {
+        $test = new AsikaAdapterFactory();
+
+        $query = new KeywordQuery(array());
+
+        $query->where('name', 'hello there ');
+
+        $test = $test->make(array(
+            'base_uri' => 'http://jsonplaceholder.typicode.com/'
+        ));
+
+        $result = $test->get('posts', array('query' => $query->toArray()));
 
         $this->assertInstanceOf('Psr\Http\Message\ResponseInterface', $result);
     }
@@ -156,7 +174,7 @@ class GuzzleAdapterTest extends \PHPUnit_Framework_TestCase
 
         $mocks['http']->shouldReceive('put')
             ->once()
-            ->with('http://shrek-api.cobwebinfo.com/v1/test', array(), array())
+            ->with('http://shrek-api.cobwebinfo.com/v1/test', '', array())
             ->andReturn(true);
 
 
@@ -175,7 +193,7 @@ class GuzzleAdapterTest extends \PHPUnit_Framework_TestCase
 
         $mocks['http']->shouldReceive('put')
             ->once()
-            ->with('http://shrek-api.cobwebinfo.com/v1/test', $params, array())
+            ->with('http://shrek-api.cobwebinfo.com/v1/test', http_build_query($params), array())
             ->andReturn(true);
 
         $result = $mocks['adapter']->put('test', array(
@@ -195,7 +213,7 @@ class GuzzleAdapterTest extends \PHPUnit_Framework_TestCase
 
         $mocks['http']->shouldReceive('put')
             ->once()
-            ->with('http://shrek-api.cobwebinfo.com/v1/test', array(), $params)
+            ->with('http://shrek-api.cobwebinfo.com/v1/test', '', $params)
             ->andReturn(true);
 
         $result = $mocks['adapter']->put('test', array(
@@ -224,7 +242,7 @@ class GuzzleAdapterTest extends \PHPUnit_Framework_TestCase
 
         $mocks['http']->shouldReceive('post')
             ->once()
-            ->with('http://shrek-api.cobwebinfo.com/v1/test', array(), array())
+            ->with('http://shrek-api.cobwebinfo.com/v1/test', '', array())
             ->andReturn(true);
 
 
@@ -243,7 +261,7 @@ class GuzzleAdapterTest extends \PHPUnit_Framework_TestCase
 
         $mocks['http']->shouldReceive('post')
             ->once()
-            ->with('http://shrek-api.cobwebinfo.com/v1/test', $params, array())
+            ->with('http://shrek-api.cobwebinfo.com/v1/test', http_build_query($params), array())
             ->andReturn(true);
 
         $result = $mocks['adapter']->post('test', array(
@@ -263,7 +281,7 @@ class GuzzleAdapterTest extends \PHPUnit_Framework_TestCase
 
         $mocks['http']->shouldReceive('post')
             ->once()
-            ->with('http://shrek-api.cobwebinfo.com/v1/test', array(), $params)
+            ->with('http://shrek-api.cobwebinfo.com/v1/test', '', $params)
             ->andReturn(true);
 
         $result = $mocks['adapter']->post('test', array(
@@ -292,7 +310,7 @@ class GuzzleAdapterTest extends \PHPUnit_Framework_TestCase
 
         $mocks['http']->shouldReceive('patch')
             ->once()
-            ->with('http://shrek-api.cobwebinfo.com/v1/test', array(), array())
+            ->with('http://shrek-api.cobwebinfo.com/v1/test', '', array())
             ->andReturn(true);
 
 
@@ -311,7 +329,7 @@ class GuzzleAdapterTest extends \PHPUnit_Framework_TestCase
 
         $mocks['http']->shouldReceive('patch')
             ->once()
-            ->with('http://shrek-api.cobwebinfo.com/v1/test', $params, array())
+            ->with('http://shrek-api.cobwebinfo.com/v1/test', http_build_query($params), array())
             ->andReturn(true);
 
         $result = $mocks['adapter']->patch('test', array(
@@ -331,7 +349,7 @@ class GuzzleAdapterTest extends \PHPUnit_Framework_TestCase
 
         $mocks['http']->shouldReceive('patch')
             ->once()
-            ->with('http://shrek-api.cobwebinfo.com/v1/test', array(), $params)
+            ->with('http://shrek-api.cobwebinfo.com/v1/test', '', $params)
             ->andReturn(true);
 
         $result = $mocks['adapter']->patch('test', array(
@@ -362,7 +380,7 @@ class GuzzleAdapterTest extends \PHPUnit_Framework_TestCase
 
         $mocks['http']->shouldReceive('delete')
             ->once()
-            ->with('http://shrek-api.cobwebinfo.com/v1/test', array(), array())
+            ->with('http://shrek-api.cobwebinfo.com/v1/test', '', array())
             ->andReturn(true);
 
 
@@ -381,7 +399,7 @@ class GuzzleAdapterTest extends \PHPUnit_Framework_TestCase
 
         $mocks['http']->shouldReceive('delete')
             ->once()
-            ->with('http://shrek-api.cobwebinfo.com/v1/test', $params, array())
+            ->with('http://shrek-api.cobwebinfo.com/v1/test', http_build_query($params), array())
             ->andReturn(true);
 
         $result = $mocks['adapter']->delete('test', array(
@@ -401,7 +419,7 @@ class GuzzleAdapterTest extends \PHPUnit_Framework_TestCase
 
         $mocks['http']->shouldReceive('delete')
             ->once()
-            ->with('http://shrek-api.cobwebinfo.com/v1/test', array(), $params)
+            ->with('http://shrek-api.cobwebinfo.com/v1/test', '', $params)
             ->andReturn(true);
 
         $result = $mocks['adapter']->delete('test', array(

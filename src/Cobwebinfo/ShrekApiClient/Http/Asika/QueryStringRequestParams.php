@@ -10,7 +10,7 @@ class QueryStringRequestParams extends GetRequestParams
      */
     public function getQueryString()
     {
-        return "?" . http_build_query($this->query);
+        return http_build_query($this->query);
     }
 
     /**
