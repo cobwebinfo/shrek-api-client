@@ -8,7 +8,7 @@ class QueryStringRequestParams extends GetRequestParams
     /**
      * @return string
      */
-    public function getQueryString()
+    public function getEncoded()
     {
         return http_build_query($this->query);
     }

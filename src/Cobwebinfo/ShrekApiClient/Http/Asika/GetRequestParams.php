@@ -53,4 +53,23 @@ class GetRequestParams
         }
     }
 
+    /**
+     * @return array
+     */
+    public function getEncoded()
+    {
+        $payload = $this->query;
+
+        array_walk_recursive($payload, array($this, 'encode'));
+
+        return $payload;
+    }
+
+    /**
+     * @param $item
+     * @param $key
+     */
+    function encode(&$item, $key) {
+        $item = rawurlencode($item);
+    }
 }

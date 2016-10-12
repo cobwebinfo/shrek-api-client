@@ -22,7 +22,7 @@ class AsikaAdapterTest extends \PHPUnit_Framework_TestCase
 
         $mocks['http']->shouldReceive('get')
             ->once()
-            ->with('http://shrek-api.cobwebinfo.com/v1/test', '', array())
+            ->with('http://shrek-api.cobwebinfo.com/v1/test', [], array())
             ->andReturn(true);
 
 
@@ -41,7 +41,7 @@ class AsikaAdapterTest extends \PHPUnit_Framework_TestCase
 
         $mocks['http']->shouldReceive('get')
             ->once()
-            ->with('http://shrek-api.cobwebinfo.com/v1/test', http_build_query($params), array())
+            ->with('http://shrek-api.cobwebinfo.com/v1/test', $params, array())
             ->andReturn(true);
 
         $result = $mocks['adapter']->get('test', array(
@@ -61,7 +61,7 @@ class AsikaAdapterTest extends \PHPUnit_Framework_TestCase
 
         $mocks['http']->shouldReceive('get')
             ->once()
-            ->with('http://shrek-api.cobwebinfo.com/v1/test', '', $params)
+            ->with('http://shrek-api.cobwebinfo.com/v1/test', [], $params)
             ->andReturn(true);
 
         $result = $mocks['adapter']->get('test', array(
@@ -80,23 +80,6 @@ class AsikaAdapterTest extends \PHPUnit_Framework_TestCase
         ));
 
         $result = $test->get('posts/1', array());
-
-        $this->assertInstanceOf('Psr\Http\Message\ResponseInterface', $result);
-    }
-
-    public function test_guzzle_handles_white_space()
-    {
-        $test = new GuzzleAdapterFactory();
-
-        $query = new KeywordQuery([]);
-
-        $query->where('name', 'hello there ');
-
-        $test = $test->make(array(
-            'base_uri' => 'http://jsonplaceholder.typicode.com/'
-        ));
-
-        $result = $test->get('posts', ['query' => $query->toArray()]);
 
         $this->assertInstanceOf('Psr\Http\Message\ResponseInterface', $result);
     }

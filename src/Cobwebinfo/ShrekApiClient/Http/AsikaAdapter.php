@@ -46,9 +46,9 @@ class AsikaAdapter implements HttpRequester
      */
     public function get($uri, array $options = array())
     {
-        $params = new QueryStringRequestParams($options);
+        $params = new GetRequestParams($options);
 
-        return $this->client->get($this->baseUrl . $uri, $params->getQueryString(), $params->headers);
+        return $this->client->get($this->baseUrl . $uri, $params->getEncoded(), $params->headers);
     }
 
     /**
@@ -61,7 +61,7 @@ class AsikaAdapter implements HttpRequester
         $params = new QueryStringRequestParams($options);
 
         if ($params->hasQuery()) {
-            $query = $this->baseUrl . $uri . '?' . $params->getQueryString();
+            $query = $this->baseUrl . $uri . '?' . $params->getEncoded();
         } else {
             $query = $this->baseUrl . $uri;
         }
@@ -78,7 +78,7 @@ class AsikaAdapter implements HttpRequester
     {
         $params = new QueryStringRequestParams($options);
 
-        return $this->client->put($this->baseUrl . $uri, $params->getQueryString(), $params->headers);
+        return $this->client->put($this->baseUrl . $uri, $params->getEncoded(), $params->headers);
     }
 
     /**
@@ -90,7 +90,7 @@ class AsikaAdapter implements HttpRequester
     {
         $params = new QueryStringRequestParams($options);
 
-        return $this->client->post($this->baseUrl . $uri, $params->getQueryString(), $params->headers);
+        return $this->client->post($this->baseUrl . $uri, $params->getEncoded(), $params->headers);
     }
 
     /**
@@ -102,7 +102,7 @@ class AsikaAdapter implements HttpRequester
     {
         $params = new QueryStringRequestParams($options);
 
-        return $this->client->patch($this->baseUrl . $uri, $params->getQueryString(), $params->headers);
+        return $this->client->patch($this->baseUrl . $uri, $params->getEncoded(), $params->headers);
     }
 
     /**
@@ -114,6 +114,6 @@ class AsikaAdapter implements HttpRequester
     {
         $params = new QueryStringRequestParams($options);
 
-        return $this->client->delete($this->baseUrl . $uri, $params->getQueryString(), $params->headers);
+        return $this->client->delete($this->baseUrl . $uri, $params->getEncoded(), $params->headers);
     }
 }

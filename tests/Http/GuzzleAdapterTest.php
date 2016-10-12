@@ -4,6 +4,7 @@ use Cobwebinfo\ShrekApiClient\Factory\AsikaAdapterFactory;
 use Cobwebinfo\ShrekApiClient\Factory\GuzzleAdapterFactory;
 use Cobwebinfo\ShrekApiClient\Http\AsikaAdapter;
 use Cobwebinfo\ShrekApiClient\Http\GuzzleAdapter;
+use Cobwebinfo\ShrekApiClient\Query\KeywordQuery;
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Yaml\Yaml;
@@ -79,6 +80,23 @@ class GuzzleAdapterTest extends \PHPUnit_Framework_TestCase
         ));
 
         $result = $test->get('posts/1', array());
+
+        $this->assertInstanceOf('Psr\Http\Message\ResponseInterface', $result);
+    }
+
+    public function test_guzzle_handles_white_space()
+    {
+        $test = new GuzzleAdapterFactory();
+
+        $query = new KeywordQuery([]);
+
+        $query->where('name', 'hello there ');
+
+        $test = $test->make(array(
+            'base_uri' => 'http://jsonplaceholder.typicode.com/'
+        ));
+
+        $result = $test->get('posts', ['query' => $query->toArray()]);
 
         $this->assertInstanceOf('Psr\Http\Message\ResponseInterface', $result);
     }

@@ -35,7 +35,7 @@ class KeywordClientTest extends \PHPUnit_Framework_TestCase
 
         $mock->shouldReceive('get')
             ->once()
-            ->with('keywords/', [], ['page' => 0, 'per_page' => 1])
+            ->with('keywords', [], ['page' => 0, 'per_page' => 1])
             ->andReturn($response);
 
         $result = $mock->paginate(0, 1, []);
