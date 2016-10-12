@@ -46,9 +46,9 @@ class AsikaAdapter implements HttpRequester
      */
     public function get($uri, array $options = array())
     {
-        $params = new GetRequestParams($options);
+        $params = new QueryStringRequestParams($options);
 
-        return $this->client->get($this->baseUrl . $uri, $params->query, $params->headers);
+        return $this->client->get($this->baseUrl . $uri, $params->getQueryString(), $params->headers);
     }
 
     /**
@@ -61,7 +61,7 @@ class AsikaAdapter implements HttpRequester
         $params = new QueryStringRequestParams($options);
 
         if ($params->hasQuery()) {
-            $query = $this->baseUrl . $uri . $params->getQueryString();
+            $query = $this->baseUrl . $uri . '?' . $params->getQueryString();
         } else {
             $query = $this->baseUrl . $uri;
         }
