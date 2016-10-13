@@ -14,7 +14,8 @@ class KeywordQuery extends Query
      */
     protected $relations = array(
         'organisations',
-        'snippets'
+        'snippets',
+        'related'
     );
 
     /**
