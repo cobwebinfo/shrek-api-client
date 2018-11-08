@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/cobwebinfo/shrek-api-client.svg?branch=master)](https://travis-ci.org/cobwebinfo/shrek-api-client)
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/60bb9cea721d4347a48ced360cff5df9)](https://www.codacy.com/app/jr-cobweb/shrek-api-client?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=cobwebinfo/shrek-api-client&amp;utm_campaign=Badge_Grade)
+
 This library can be used to pull data from the various public endpoints provided by the SHREK API. The client has been created with ease of use in mind, simply provide your API ID and private key and use the instructions below to proceed.
 
 ##Compatibility
